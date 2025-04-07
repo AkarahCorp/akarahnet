@@ -3,4 +3,5 @@
 /.gradle
 /.vscode
 /.idea
+/bin
 nohup.out
