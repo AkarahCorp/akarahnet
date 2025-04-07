@@ -3,7 +3,7 @@ plugins {
     id("xyz.jpenilla.run-paper") version "2.3.1"
 }
 
-val pluginPacksVer = "8abb709bd5"
+val pluginPacksVer = "8055c4c84e"
 
 group = "dev.akarah"
 version = "1.0-SNAPSHOT"
