@@ -1,0 +1,5 @@
+name: akarahnet
+version: '1.0-SNAPSHOT'
+main: akarahnet.Main
+api-version: '1.21'
+bootstrapper: akarahnet.Bootstrapper

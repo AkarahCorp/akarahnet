@@ -1,0 +1,6 @@
+/run
+/build
+/.gradle
+/.vscode
+/.idea
+nohup.out
