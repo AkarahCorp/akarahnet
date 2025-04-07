@@ -1,5 +1,12 @@
 name: akarahnet
 version: '1.0-SNAPSHOT'
-main: akarahnet.Main
+main: akarahnet.Core
 api-version: '1.21'
 bootstrapper: akarahnet.Bootstrapper
+
+dependencies:
+  server:
+    plugin-packs:
+      load: BEFORE
+      required: true
+      join-classpath: true
