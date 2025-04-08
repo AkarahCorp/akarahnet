@@ -1,36 +1,58 @@
 package akarahnet.items;
 
-import java.util.HashMap;
-import java.util.UUID;
-
+import akarahnet.Core;
+import dev.akarah.pluginpacks.data.PackRepository;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
-import akarahnet.Core;
-import dev.akarah.pluginpacks.data.PackRepository;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class StatsHolder {
     static StatsHolder INSTANCE = new StatsHolder();
+    ConcurrentHashMap<UUID, StatsObject> playerStats = new ConcurrentHashMap<>();
+    ConcurrentHashMap<UUID, Double> currentHealth = new ConcurrentHashMap<>();
+    ConcurrentHashMap<UUID, Double> currentMana = new ConcurrentHashMap<>();
 
     public static StatsHolder getInstance() {
         return INSTANCE;
     }
 
-    HashMap<UUID, StatsObject> playerStats = new HashMap<>();
-
     public StatsObject getStatsFor(UUID uuid) {
         return playerStats.get(uuid);
     }
 
+    public double getHealth(UUID player) {
+        return currentHealth.getOrDefault(player, 100.0);
+    }
+
+    public void setHealth(UUID player, double hp) {
+        currentHealth.put(player, hp);
+    }
+
+    public double getMana(UUID player) {
+        return currentMana.getOrDefault(player, 100.0);
+    }
+
+    public void setMana(UUID player, double mana) {
+        currentMana.put(player, mana);
+    }
+
     public void updatePlayerStats(Player p) {
+        if (!currentHealth.containsKey(p.getUniqueId())) {
+            currentHealth.put(p.getUniqueId(), 100.0);
+        }
+        if (!currentMana.containsKey(p.getUniqueId())) {
+            currentMana.put(p.getUniqueId(), 100.0);
+        }
         var baseStats = StatsObject.of()
                 .add(StatsObject.MAX_HEALTH, 100)
-                .add(StatsObject.MAX_MANA, 0);
+                .add(StatsObject.MAX_MANA, 100);
 
-        var items = new ItemStack[] {
+        var items = new ItemStack[]{
                 p.getInventory().getItem(EquipmentSlot.HAND),
                 p.getInventory().getItem(EquipmentSlot.OFF_HAND),
                 p.getInventory().getItem(EquipmentSlot.HEAD),

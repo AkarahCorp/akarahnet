@@ -1,12 +1,13 @@
 package akarahnet;
 
+import akarahnet.items.UpdateInventory;
+import akarahnet.player.DamageHandler;
+import akarahnet.player.PlayerLoop;
+import akarahnet.player.UseAbility;
+import dev.akarah.pluginpacks.data.PackRepository;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import akarahnet.items.StatsHolder;
-import akarahnet.items.UpdateInventory;
-import dev.akarah.pluginpacks.data.PackRepository;
 
 public final class Core extends JavaPlugin {
     public static Core INSTANCE;
@@ -24,6 +25,8 @@ public final class Core extends JavaPlugin {
         INSTANCE = this;
 
         PackRepository.getInstance().reloadRegistries();
+        this.getServer().getPluginManager().registerEvents(new UseAbility(), this);
+        this.getServer().getPluginManager().registerEvents(new DamageHandler(), this);
 
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(Core.getInstance(), task -> {
             for (var player : Bukkit.getServer().getOnlinePlayers()) {
@@ -35,10 +38,10 @@ public final class Core extends JavaPlugin {
         }, 1, 20);
 
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(Core.getInstance(), task -> {
+            PlayerLoop.time.incrementAndGet();
             for (var player : Bukkit.getServer().getOnlinePlayers()) {
                 player.getScheduler().run(Core.getInstance(), subtask -> {
-                    StatsHolder.getInstance().updatePlayerStats(player);
-                    // System.out.println(StatsHolder.getInstance().getStatsFor(player.getUniqueId()));
+                    PlayerLoop.tick(player);
                 }, () -> {
                 });
             }
