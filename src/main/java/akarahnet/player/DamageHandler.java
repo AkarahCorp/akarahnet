@@ -1,17 +1,18 @@
 package akarahnet.player;
 
-import akarahnet.items.StatsHolder;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.title.Title;
+import java.time.Duration;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import java.time.Duration;
+import akarahnet.items.StatsHolder;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.title.Title;
 
 public class DamageHandler implements Listener {
     @EventHandler
@@ -35,10 +36,7 @@ public class DamageHandler implements Listener {
                                 Title.Times.times(
                                         Duration.ofMillis(100),
                                         Duration.ofMillis(2000),
-                                        Duration.ofMillis(100)
-                                )
-                        )
-                );
+                                        Duration.ofMillis(100))));
                 StatsHolder.getInstance().setHealth(p.getUniqueId(), 10000);
             }
         }
@@ -46,7 +44,7 @@ public class DamageHandler implements Listener {
 
     @EventHandler
     public void onDie(EntityDeathEvent event) {
-        if (event.getEntity() instanceof Player p) {
+        if (event.getEntity() instanceof Player) {
             event.setCancelled(true);
         }
     }

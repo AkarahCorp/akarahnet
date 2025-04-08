@@ -1,25 +1,24 @@
 package akarahnet.player;
 
-import akarahnet.items.StatsHolder;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
+import akarahnet.items.StatsHolder;
+
 public class UseAbility implements Listener {
     @EventHandler
     public void onSwapHands(PlayerSwapHandItemsEvent event) {
         event.setCancelled(true);
-
 
         if (StatsHolder.getInstance().getMana(event.getPlayer().getUniqueId()) < 15.0) {
             return;
         }
         StatsHolder.getInstance().setMana(
                 event.getPlayer().getUniqueId(),
-                StatsHolder.getInstance().getMana(event.getPlayer().getUniqueId()) - 15.0
-        );
+                StatsHolder.getInstance().getMana(event.getPlayer().getUniqueId()) - 15.0);
 
         var pos = event.getPlayer().getLocation().add(0, 1, 0);
         var lastPos = pos.clone();
@@ -41,6 +40,11 @@ public class UseAbility implements Listener {
                     .count(3)
                     .spawn();
         }
-        event.getPlayer().teleportAsync(lastPos);
+        event.getPlayer().teleportAsync(lastPos).thenAccept(v -> {
+            if (v) {
+                event.getPlayer().setVelocity(event.getPlayer().getLocation().getDirection().multiply(0.2));
+            }
+        });
+
     }
 }

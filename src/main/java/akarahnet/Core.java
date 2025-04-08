@@ -1,13 +1,15 @@
 package akarahnet;
 
-import akarahnet.items.UpdateInventory;
-import akarahnet.player.DamageHandler;
-import akarahnet.player.PlayerLoop;
-import akarahnet.player.UseAbility;
-import dev.akarah.pluginpacks.data.PackRepository;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import akarahnet.items.UpdateInventory;
+import akarahnet.player.DamageHandler;
+import akarahnet.player.MapEvents;
+import akarahnet.player.PlayerLoop;
+import akarahnet.player.UseAbility;
+import dev.akarah.pluginpacks.data.PackRepository;
 
 public final class Core extends JavaPlugin {
     public static Core INSTANCE;
@@ -27,6 +29,7 @@ public final class Core extends JavaPlugin {
         PackRepository.getInstance().reloadRegistries();
         this.getServer().getPluginManager().registerEvents(new UseAbility(), this);
         this.getServer().getPluginManager().registerEvents(new DamageHandler(), this);
+        this.getServer().getPluginManager().registerEvents(new MapEvents(), this);
 
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(Core.getInstance(), task -> {
             for (var player : Bukkit.getServer().getOnlinePlayers()) {

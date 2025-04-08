@@ -39,6 +39,8 @@ tasks.runServer {
 
     downloadPlugins {
         url("https://jitpack.io/com/github/AkarahCorp/plugin-packs/${pluginPacksVer}/plugin-packs-${pluginPacksVer}.jar")
+
+         modrinth("axiom-paper-plugin", "4.0.4+1.21.4")
     }
 }
 
