@@ -11,14 +11,19 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 public class Bootstrapper implements PluginBootstrap {
     @Override
     public void bootstrap(BootstrapContext bootstrapContext) {
-        PackRepository.getInstance().reloadRegistries();
+        try {
+            PackRepository.getInstance().reloadRegistries();
 
-        PackRepository.getInstance().addRegistry(CustomItem.NAMESPACE, PackRepository.RegistryInstance.create(CustomItem.CODEC, CustomItem.class));
+            PackRepository.getInstance().addRegistry(CustomItem.NAMESPACE, PackRepository.RegistryInstance.create(CustomItem.CODEC, CustomItem.class));
 
-        bootstrapContext.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            bootstrapContext.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
 
-            ReloadCommand.register(event.registrar());
-            CItemCommand.register(event.registrar());
-        });
+                ReloadCommand.register(event.registrar());
+                CItemCommand.register(event.registrar());
+            });
+        } catch (Exception e) {
+            bootstrapContext.getLogger().error("An exception occured while bootstrapping!");
+            bootstrapContext.getLogger().error(e.toString());
+        }
     }
 }
