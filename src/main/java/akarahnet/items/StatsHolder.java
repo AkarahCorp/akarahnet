@@ -16,6 +16,7 @@ public class StatsHolder {
     ConcurrentHashMap<UUID, StatsObject> playerStats = new ConcurrentHashMap<>();
     ConcurrentHashMap<UUID, Double> currentHealth = new ConcurrentHashMap<>();
     ConcurrentHashMap<UUID, Double> currentMana = new ConcurrentHashMap<>();
+    ConcurrentHashMap<UUID, Integer> attackCooldown = new ConcurrentHashMap<>();
 
     public static StatsHolder getInstance() {
         return INSTANCE;
@@ -39,6 +40,14 @@ public class StatsHolder {
 
     public void setMana(UUID player, double mana) {
         currentMana.put(player, mana);
+    }
+
+    public int getAttackCooldown(UUID player) {
+        return attackCooldown.getOrDefault(player, 0);
+    }
+
+    public void setAttackCooldown(UUID player, int cd) {
+        attackCooldown.put(player, cd);
     }
 
     public void updatePlayerStats(Player p) {

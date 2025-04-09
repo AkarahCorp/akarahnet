@@ -67,6 +67,7 @@ public record CustomItem(
                 colorableArmorMeta.addItemFlags(ItemFlag.HIDE_DYE);
             }
             meta.lore(lore.build().lines());
+            meta.setUnbreakable(true);
         });
         item.editPersistentDataContainer(pdc -> pdc.set(Core.key("id"), PersistentDataType.STRING, this.id.asString()));
 

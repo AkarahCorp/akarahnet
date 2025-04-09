@@ -1,15 +1,19 @@
 package akarahnet;
 
-import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import akarahnet.items.UpdateInventory;
+import akarahnet.mob.MobAttack;
+import akarahnet.mob.MobLoop;
 import akarahnet.player.DamageHandler;
 import akarahnet.player.MapEvents;
 import akarahnet.player.PlayerLoop;
 import akarahnet.player.UseAbility;
 import dev.akarah.pluginpacks.data.PackRepository;
+import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Objects;
 
 public final class Core extends JavaPlugin {
     public static Core INSTANCE;
@@ -31,6 +35,7 @@ public final class Core extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new UseAbility(), this);
         this.getServer().getPluginManager().registerEvents(new DamageHandler(), this);
         this.getServer().getPluginManager().registerEvents(new MapEvents(), this);
+        this.getServer().getPluginManager().registerEvents(new MobAttack(), this);
 
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(Core.getInstance(), task -> {
             for (var player : Bukkit.getServer().getOnlinePlayers()) {
@@ -49,6 +54,14 @@ public final class Core extends JavaPlugin {
                 }, () -> {
                 });
             }
+
+            MobLoop.time.incrementAndGet();
+            for (var entity : Objects.requireNonNull(Bukkit.getWorld("world")).getEntities()) {
+                if (!(entity instanceof Player)) {
+                    MobLoop.tick(entity);
+                }
+            }
+
         }, 1, 1);
     }
 
