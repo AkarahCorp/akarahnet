@@ -27,6 +27,7 @@ public final class Core extends JavaPlugin {
         INSTANCE = this;
 
         PackRepository.getInstance().reloadRegistries();
+
         this.getServer().getPluginManager().registerEvents(new UseAbility(), this);
         this.getServer().getPluginManager().registerEvents(new DamageHandler(), this);
         this.getServer().getPluginManager().registerEvents(new MapEvents(), this);

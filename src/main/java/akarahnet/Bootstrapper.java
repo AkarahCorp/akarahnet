@@ -1,8 +1,10 @@
 package akarahnet;
 
 import akarahnet.commands.CItemCommand;
+import akarahnet.commands.CMobCommand;
 import akarahnet.commands.ReloadCommand;
 import akarahnet.items.CustomItem;
+import akarahnet.mob.CustomMob;
 import dev.akarah.pluginpacks.data.PackRepository;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
@@ -14,12 +16,15 @@ public class Bootstrapper implements PluginBootstrap {
         try {
             PackRepository.getInstance().reloadRegistries();
 
-            PackRepository.getInstance().addRegistry(CustomItem.NAMESPACE, PackRepository.RegistryInstance.create(CustomItem.CODEC, CustomItem.class));
+            PackRepository.getInstance().addRegistry(CustomItem.NAMESPACE,
+                    PackRepository.RegistryInstance.create(CustomItem.CODEC, CustomItem.class));
+            PackRepository.getInstance().addRegistry(CustomMob.NAMESPACE,
+                    PackRepository.RegistryInstance.create(CustomMob.CODEC, CustomMob.class));
 
             bootstrapContext.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
-
                 ReloadCommand.register(event.registrar());
                 CItemCommand.register(event.registrar());
+                CMobCommand.register(event.registrar());
             });
         } catch (Exception e) {
             bootstrapContext.getLogger().error("An exception occured while bootstrapping!");
