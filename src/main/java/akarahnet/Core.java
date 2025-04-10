@@ -1,8 +1,8 @@
 package akarahnet;
 
-import akarahnet.items.UpdateInventory;
-import akarahnet.mob.MobAttack;
-import akarahnet.mob.MobLoop;
+import akarahnet.data.items.UpdateInventory;
+import akarahnet.data.mob.MobAttack;
+import akarahnet.data.mob.MobLoop;
 import akarahnet.player.DamageHandler;
 import akarahnet.player.MapEvents;
 import akarahnet.player.PlayerLoop;

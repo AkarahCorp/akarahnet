@@ -1,18 +1,16 @@
-package akarahnet.items;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-
-import org.bukkit.NamespacedKey;
+package akarahnet.data.items;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.PrimitiveCodec;
-
 import io.papermc.paper.datacomponent.item.ItemLore;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.NamespacedKey;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 public class StatsObject {
     public static Codec<StatsObject> CODEC = Codec.unboundedMap(
@@ -35,7 +33,7 @@ public class StatsObject {
     }
 
     public void addPositiveStat(ItemLore.Builder lore, String symbol, String name, NamespacedKey key,
-            boolean hideZeroes) {
+                                boolean hideZeroes) {
         if (this.stats.containsKey(key)) {
             var value = this.stats.get(key);
             if (value > 0.0) {

@@ -1,4 +1,4 @@
-package akarahnet.items;
+package akarahnet.data.items;
 
 import akarahnet.Codecs;
 import akarahnet.Core;

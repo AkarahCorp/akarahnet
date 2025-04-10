@@ -1,8 +1,8 @@
 package akarahnet.player;
 
 import akarahnet.Core;
-import akarahnet.items.StatsHolder;
-import akarahnet.items.StatsObject;
+import akarahnet.data.items.StatsHolder;
+import akarahnet.data.items.StatsObject;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;

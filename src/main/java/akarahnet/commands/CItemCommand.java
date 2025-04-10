@@ -1,6 +1,6 @@
 package akarahnet.commands;
 
-import akarahnet.items.CustomItem;
+import akarahnet.data.items.CustomItem;
 import dev.akarah.pluginpacks.data.PackRepository;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.entity.Player;

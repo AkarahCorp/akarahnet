@@ -1,8 +1,8 @@
 package akarahnet.player;
 
-import akarahnet.items.StatsHolder;
-import akarahnet.items.StatsObject;
-import akarahnet.items.UpdateInventory;
+import akarahnet.data.items.StatsHolder;
+import akarahnet.data.items.StatsObject;
+import akarahnet.data.items.UpdateInventory;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;

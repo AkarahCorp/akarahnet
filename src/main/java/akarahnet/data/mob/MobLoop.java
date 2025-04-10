@@ -1,4 +1,4 @@
-package akarahnet.mob;
+package akarahnet.data.mob;
 
 import akarahnet.Core;
 import dev.akarah.pluginpacks.data.PackRepository;

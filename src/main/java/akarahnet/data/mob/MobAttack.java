@@ -1,8 +1,8 @@
-package akarahnet.mob;
+package akarahnet.data.mob;
 
 import akarahnet.Core;
-import akarahnet.items.StatsHolder;
-import akarahnet.items.StatsObject;
+import akarahnet.data.items.StatsHolder;
+import akarahnet.data.items.StatsObject;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,7 +44,7 @@ public class MobAttack implements Listener {
                 event.setDamage(0);
                 return;
             }
-            
+
             StatsHolder.getInstance().setAttackCooldown(
                     p.getUniqueId(),
                     10 - ((int) StatsHolder.getInstance().getStatsFor(p.getUniqueId()).get(StatsObject.ATTACK_SPEED) / 10)

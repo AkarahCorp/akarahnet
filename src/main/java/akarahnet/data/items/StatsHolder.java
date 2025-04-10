@@ -1,4 +1,4 @@
-package akarahnet.items;
+package akarahnet.data.items;
 
 import akarahnet.Core;
 import dev.akarah.pluginpacks.data.PackRepository;
