@@ -39,9 +39,7 @@ public final class Core extends JavaPlugin {
 
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(Core.getInstance(), task -> {
             for (var player : Bukkit.getServer().getOnlinePlayers()) {
-                player.getScheduler().run(Core.getInstance(), subtask -> {
-                    UpdateInventory.update(player.getInventory());
-                }, () -> {
+                player.getScheduler().run(Core.getInstance(), subtask -> UpdateInventory.update(player.getInventory()), () -> {
                 });
             }
         }, 1, 20);
@@ -49,9 +47,7 @@ public final class Core extends JavaPlugin {
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(Core.getInstance(), task -> {
             PlayerLoop.time.incrementAndGet();
             for (var player : Bukkit.getServer().getOnlinePlayers()) {
-                player.getScheduler().run(Core.getInstance(), subtask -> {
-                    PlayerLoop.tick(player);
-                }, () -> {
+                player.getScheduler().run(Core.getInstance(), subtask -> PlayerLoop.tick(player), () -> {
                 });
             }
 

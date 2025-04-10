@@ -1,10 +1,10 @@
 package akarahnet.data.items;
 
-import akarahnet.Codecs;
 import akarahnet.Core;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.PrimitiveCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.akarah.pluginpacks.Codecs;
 import dev.akarah.pluginpacks.data.PluginNamespace;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemLore;

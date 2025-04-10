@@ -1,10 +1,12 @@
 package akarahnet.data.mob;
 
-import akarahnet.Codecs;
 import akarahnet.Core;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.PrimitiveCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.akarah.actions.Action;
+import dev.akarah.actions.generic.Noop;
+import dev.akarah.pluginpacks.Codecs;
 import dev.akarah.pluginpacks.data.PluginNamespace;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -17,7 +19,9 @@ public record CustomMob(
         NamespacedKey id,
         String name,
         NamespacedKey entityType,
-        double health
+        double health,
+
+        Action onInteract
 ) {
 
     public static PluginNamespace<CustomMob> NAMESPACE = PluginNamespace.create("cmob");
@@ -26,7 +30,8 @@ public record CustomMob(
             Codecs.NAMESPACED_KEY.fieldOf("id").forGetter(CustomMob::id),
             PrimitiveCodec.STRING.fieldOf("name").forGetter(CustomMob::name),
             Codecs.NAMESPACED_KEY.fieldOf("entity_type").forGetter(CustomMob::entityType),
-            PrimitiveCodec.DOUBLE.fieldOf("health").forGetter(CustomMob::health)
+            PrimitiveCodec.DOUBLE.fieldOf("health").forGetter(CustomMob::health),
+            Action.CODEC.optionalFieldOf("on_interact", new Noop()).forGetter(CustomMob::onInteract)
     ).apply(instance, CustomMob::new));
 
     public Entity spawn(Location loc) {

@@ -1,6 +1,7 @@
 package akarahnet.commands;
 
 import akarahnet.data.mob.CustomMob;
+import dev.akarah.pluginpacks.commands.RegistryArgumentType;
 import dev.akarah.pluginpacks.data.PackRepository;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;

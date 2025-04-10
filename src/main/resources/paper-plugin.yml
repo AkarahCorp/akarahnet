@@ -10,8 +10,16 @@ dependencies:
       load: BEFORE
       required: true
       join-classpath: true
+    actions:
+      load: BEFORE
+      required: true
+      join-classpath: true
   server:
     plugin-packs:
+      load: BEFORE
+      required: true
+      join-classpath: true
+    actions:
       load: BEFORE
       required: true
       join-classpath: true

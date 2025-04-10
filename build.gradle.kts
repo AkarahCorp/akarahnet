@@ -3,7 +3,8 @@ plugins {
     id("xyz.jpenilla.run-paper") version "2.3.1"
 }
 
-val pluginPacksVer = "353172f7f8"
+val pluginPacksVer = "main-SNAPSHOT"
+val actionPacksVer = "main-SNAPSHOT"
 
 group = "dev.akarah"
 version = "1.0-SNAPSHOT"
@@ -29,7 +30,8 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
     compileOnly("com.mojang:datafixerupper:8.0.16")
-    compileOnly("com.github.AkarahCorp:plugin-packs:${pluginPacksVer}")
+    compileOnly("com.github.AkarahCorp:plugin-packs:main-SNAPSHOT")
+    compileOnly("com.github.AkarahCorp:actions:main-SNAPSHOT")
 }
 
 // Configuring the runServer task provided by the run-paper plugin.
@@ -38,9 +40,10 @@ tasks.runServer {
     minecraftVersion("1.21.4")
 
     downloadPlugins {
-        url("https://jitpack.io/com/github/AkarahCorp/plugin-packs/${pluginPacksVer}/plugin-packs-${pluginPacksVer}.jar")
+        url("https://jitpack.io/com/github/AkarahCorp/plugin-packs/main-SNAPSHOT/plugin-packs-main-SNAPSHOT.jar")
+        url("https://jitpack.io/com/github/AkarahCorp/actions/main-SNAPSHOT/actions-main-SNAPSHOT.jar")
 
-         modrinth("axiom-paper-plugin", "4.0.4+1.21.4")
+        modrinth("axiom-paper-plugin", "4.0.4+1.21.4")
     }
 }
 
