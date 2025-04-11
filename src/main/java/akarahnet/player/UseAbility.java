@@ -1,8 +1,8 @@
 package akarahnet.player;
 
 import akarahnet.Core;
+import akarahnet.data.items.Stats;
 import akarahnet.data.items.StatsHolder;
-import akarahnet.data.items.StatsObject;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
@@ -52,7 +52,7 @@ public class UseAbility implements Listener {
                         && !dmg.contains(entity.getUniqueId())) {
                     le.damage(
                             StatsHolder.getInstance().getStatsFor(event.getPlayer().getUniqueId())
-                                    .get(StatsObject.ATTACK_DAMAGE) * 0.3
+                                    .get(Stats.ATTACK_DAMAGE) * 0.3
                     );
                     dmg.add(entity.getUniqueId());
                 }

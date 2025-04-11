@@ -17,11 +17,6 @@ public class StatsObject {
             PrimitiveCodec.STRING.xmap(NamespacedKey::fromString, NamespacedKey::asString),
             PrimitiveCodec.DOUBLE).xmap(StatsObject::new, x -> x.stats);
 
-    public static NamespacedKey MAX_HEALTH = NamespacedKey.minecraft("max_health");
-    public static NamespacedKey MAX_MANA = NamespacedKey.minecraft("max_mana");
-    public static NamespacedKey ATTACK_DAMAGE = NamespacedKey.minecraft("attack_damage");
-    public static NamespacedKey ATTACK_SPEED = NamespacedKey.minecraft("attack_speed");
-
     HashMap<NamespacedKey, Double> stats;
 
     StatsObject(Map<NamespacedKey, Double> stats) {
@@ -56,10 +51,12 @@ public class StatsObject {
     }
 
     public void addStatsToLore(ItemLore.Builder lore, boolean hideZeroes) {
-        this.addPositiveStat(lore, "❤", "Max Health", StatsObject.MAX_HEALTH, hideZeroes);
-        this.addPositiveStat(lore, "⸎", "Max Mana", StatsObject.MAX_MANA, hideZeroes);
-        this.addPositiveStat(lore, "🗡", "Attack Damage", StatsObject.ATTACK_DAMAGE, hideZeroes);
-        this.addPositiveStat(lore, "α", "Attack Speed", StatsObject.ATTACK_SPEED, hideZeroes);
+        this.addPositiveStat(lore, "❤", "Max Health", Stats.MAX_HEALTH, hideZeroes);
+        this.addPositiveStat(lore, "⸎", "Max Mana", Stats.MAX_MANA, hideZeroes);
+        this.addPositiveStat(lore, "🗡", "Attack Damage", Stats.ATTACK_DAMAGE, hideZeroes);
+        this.addPositiveStat(lore, "α", "Attack Speed", Stats.ATTACK_SPEED, hideZeroes);
+        this.addPositiveStat(lore, "ψ", "Attack Range", Stats.ATTACK_RANGE, hideZeroes);
+        this.addPositiveStat(lore, "≈", "Walk Speed", Stats.WALK_SPEED, hideZeroes);
     }
 
     public StatsObject add(NamespacedKey stat, double amount) {

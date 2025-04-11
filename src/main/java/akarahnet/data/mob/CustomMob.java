@@ -40,7 +40,7 @@ public record CustomMob(
             return null;
         }
 
-        var entity = loc.getWorld().spawnEntity(loc, entityTypeValue);
+        var entity = loc.getWorld().spawnEntity(loc, entityTypeValue, false);
         entity.getPersistentDataContainer().set(Core.key("id"), PersistentDataType.STRING, this.id.toString());
         entity.getPersistentDataContainer().set(Core.key("health"), PersistentDataType.DOUBLE, this.health);
 

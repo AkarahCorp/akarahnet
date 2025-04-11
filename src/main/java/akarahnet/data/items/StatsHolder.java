@@ -58,8 +58,10 @@ public class StatsHolder {
             currentMana.put(p.getUniqueId(), 100.0);
         }
         var baseStats = StatsObject.of()
-                .add(StatsObject.MAX_HEALTH, 100)
-                .add(StatsObject.MAX_MANA, 100);
+                .add(Stats.MAX_HEALTH, 100)
+                .add(Stats.MAX_MANA, 100)
+                .add(Stats.WALK_SPEED, 100)
+                .add(Stats.ATTACK_RANGE, 3);
 
         var items = new ItemStack[]{
                 p.getInventory().getItem(EquipmentSlot.HAND),
@@ -71,18 +73,16 @@ public class StatsHolder {
         };
 
         for (var item : items) {
-            if (item != null) {
-                var pdc = item.getPersistentDataContainer();
-                if (pdc.has(Core.key("id"))) {
-                    var id = pdc.get(Core.key("id"), PersistentDataType.STRING);
-                    var ns = NamespacedKey.fromString(id);
-                    var opt = PackRepository.getInstance().getRegistry(CustomItem.NAMESPACE)
-                            .flatMap(it -> it.get(ns))
-                            .flatMap(it -> it.stats());
-                    if (opt.isPresent()) {
-                        var newStats = opt.get();
-                        baseStats = baseStats.add(newStats);
-                    }
+            var pdc = item.getPersistentDataContainer();
+            if (pdc.has(Core.key("id"))) {
+                var id = pdc.get(Core.key("id"), PersistentDataType.STRING);
+                var ns = NamespacedKey.fromString(id);
+                var opt = PackRepository.getInstance().getRegistry(CustomItem.NAMESPACE)
+                        .flatMap(it -> it.get(ns))
+                        .flatMap(CustomItem::stats);
+                if (opt.isPresent()) {
+                    var newStats = opt.get();
+                    baseStats = baseStats.add(newStats);
                 }
             }
         }
