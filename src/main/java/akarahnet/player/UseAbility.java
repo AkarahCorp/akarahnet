@@ -30,8 +30,10 @@ public class UseAbility implements Listener {
 
         var dmg = new ArrayList<UUID>();
 
-        for (int i = 0; i < 32; i++) {
-            var newPos = pos.add(pos.getDirection().normalize().multiply(0.25));
+        var stats = StatsHolder.getInstance().getStatsFor(event.getPlayer().getUniqueId());
+
+        for (double d = 0; d < stats.get(Stats.TELEPORT_RANGE); d += 0.1) {
+            var newPos = pos.add(pos.getDirection().normalize().multiply(0.1));
             if (newPos.getBlock().getBoundingBox().contains(newPos.x(), newPos.y(), newPos.z())
                     || newPos.getBlock().getBoundingBox().contains(newPos.x(), newPos.y() - 1, newPos.z())
                     || newPos.getBlock().getBoundingBox().contains(newPos.x(), newPos.y() + 1, newPos.z())) {
@@ -50,10 +52,7 @@ public class UseAbility implements Listener {
             for (var entity : newPos.getNearbyEntities(3, 3, 3)) {
                 if (entity.getPersistentDataContainer().has(Core.key("health")) && entity instanceof LivingEntity le
                         && !dmg.contains(entity.getUniqueId())) {
-                    le.damage(
-                            StatsHolder.getInstance().getStatsFor(event.getPlayer().getUniqueId())
-                                    .get(Stats.ATTACK_DAMAGE) * 0.3
-                    );
+                    le.damage(stats.get(Stats.ATTACK_DAMAGE) * (stats.get(Stats.TELEPORT_DAMAGE) / 100.0));
                     dmg.add(entity.getUniqueId());
                 }
             }

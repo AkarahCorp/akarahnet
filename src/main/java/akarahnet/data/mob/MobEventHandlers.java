@@ -3,6 +3,7 @@ package akarahnet.data.mob;
 import akarahnet.Core;
 import akarahnet.data.items.Stats;
 import akarahnet.data.items.StatsHolder;
+import com.destroystokyo.paper.event.entity.EndermanEscapeEvent;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +13,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.persistence.PersistentDataType;
 
-public class MobAttack implements Listener {
+public class MobEventHandlers implements Listener {
     @EventHandler
     public void entityTakeDamage(EntityDamageEvent event) {
         if (event.isCancelled() || event.getDamage() == 0.0) {
@@ -54,5 +55,10 @@ public class MobAttack implements Listener {
             );
 
         }
+    }
+
+    @EventHandler
+    public void endermanTeleport(EndermanEscapeEvent event) {
+        event.setCancelled(true);
     }
 }

@@ -1,6 +1,7 @@
 package akarahnet.data.mob;
 
 import akarahnet.Core;
+import akarahnet.data.items.Stats;
 import dev.akarah.pluginpacks.data.PackRepository;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -48,7 +49,7 @@ public class MobLoop {
                                     Component.text(" ")
                             )
                             .append(
-                                    Component.text((int) (double) hp + "/" + (int) mob.health() + "HP")
+                                    Component.text((int) (double) hp + "/" + (int) mob.stats().get(Stats.MAX_HEALTH) + "HP")
                                             .color(TextColor.color(200, 0, 0))
                             )
             );

@@ -61,7 +61,10 @@ public class StatsHolder {
                 .add(Stats.MAX_HEALTH, 100)
                 .add(Stats.MAX_MANA, 100)
                 .add(Stats.WALK_SPEED, 100)
-                .add(Stats.ATTACK_RANGE, 3);
+                .add(Stats.ATTACK_RANGE, 3)
+                .add(Stats.TELEPORT_DAMAGE, 30)
+                .add(Stats.TELEPORT_RANGE, 5)
+                .add(Stats.SCALE, 100);
 
         var items = new ItemStack[]{
                 p.getInventory().getItem(EquipmentSlot.HAND),
@@ -76,6 +79,7 @@ public class StatsHolder {
             var pdc = item.getPersistentDataContainer();
             if (pdc.has(Core.key("id"))) {
                 var id = pdc.get(Core.key("id"), PersistentDataType.STRING);
+                assert id != null;
                 var ns = NamespacedKey.fromString(id);
                 var opt = PackRepository.getInstance().getRegistry(CustomItem.NAMESPACE)
                         .flatMap(it -> it.get(ns))

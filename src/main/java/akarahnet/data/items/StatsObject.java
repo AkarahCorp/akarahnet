@@ -57,6 +57,10 @@ public class StatsObject {
         this.addPositiveStat(lore, "α", "Attack Speed", Stats.ATTACK_SPEED, hideZeroes);
         this.addPositiveStat(lore, "ψ", "Attack Range", Stats.ATTACK_RANGE, hideZeroes);
         this.addPositiveStat(lore, "≈", "Walk Speed", Stats.WALK_SPEED, hideZeroes);
+
+
+        this.addPositiveStat(lore, "\uD83D\uDEE5", "Teleport Damage", Stats.TELEPORT_DAMAGE, hideZeroes);
+        this.addPositiveStat(lore, "\uD83D\uDEE7", "Teleport Range", Stats.TELEPORT_RANGE, hideZeroes);
     }
 
     public StatsObject add(NamespacedKey stat, double amount) {

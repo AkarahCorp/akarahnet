@@ -1,7 +1,7 @@
 package akarahnet;
 
 import akarahnet.data.items.UpdateInventory;
-import akarahnet.data.mob.MobAttack;
+import akarahnet.data.mob.MobEventHandlers;
 import akarahnet.data.mob.MobLoop;
 import akarahnet.player.DamageHandler;
 import akarahnet.player.MapEvents;
@@ -35,7 +35,7 @@ public final class Core extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new UseAbility(), this);
         this.getServer().getPluginManager().registerEvents(new DamageHandler(), this);
         this.getServer().getPluginManager().registerEvents(new MapEvents(), this);
-        this.getServer().getPluginManager().registerEvents(new MobAttack(), this);
+        this.getServer().getPluginManager().registerEvents(new MobEventHandlers(), this);
 
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(Core.getInstance(), task -> {
             for (var player : Bukkit.getServer().getOnlinePlayers()) {

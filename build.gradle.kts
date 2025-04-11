@@ -1,6 +1,7 @@
 plugins {
     java
     id("xyz.jpenilla.run-paper") version "2.3.1"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
 }
 
 val pluginPacksVer = "main-SNAPSHOT"
@@ -28,7 +29,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
+
     compileOnly("com.mojang:datafixerupper:8.0.16")
     compileOnly("com.github.AkarahCorp:plugin-packs:main-SNAPSHOT")
     compileOnly("com.github.AkarahCorp:actions:main-SNAPSHOT")
@@ -73,3 +75,5 @@ tasks.processResources {
         expand(props)
     }
 }
+
+paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
