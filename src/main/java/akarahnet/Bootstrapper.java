@@ -1,5 +1,6 @@
 package akarahnet;
 
+import akarahnet.actions.AknActions;
 import akarahnet.commands.CItemCommand;
 import akarahnet.commands.CMobCommand;
 import akarahnet.data.items.CustomItem;
@@ -14,13 +15,15 @@ import org.jetbrains.annotations.NotNull;
 public class Bootstrapper implements PluginBootstrap {
     @Override
     public void bootstrap(@NotNull BootstrapContext bootstrapContext) {
+        bootstrapContext.getLogger().info("Starting akarahnet bootstrapper");
+        AknActions.registerAll();
+
         bootstrapContext.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             CItemCommand.register(event.registrar());
             CMobCommand.register(event.registrar());
         });
 
         try {
-
             PackRepository.getInstance().addRegistry(CustomItem.NAMESPACE,
                     PackRepository.RegistryInstance.create(CustomItem.CODEC, CustomItem.class));
             PackRepository.getInstance().addRegistry(CustomMob.NAMESPACE,

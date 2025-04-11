@@ -6,8 +6,7 @@ import akarahnet.data.items.StatsObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.PrimitiveCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.akarah.actions.Action;
-import dev.akarah.actions.generic.Noop;
+import dev.akarah.actions.steps.generic.Noop;
 import dev.akarah.pluginpacks.Codecs;
 import dev.akarah.pluginpacks.data.PluginNamespace;
 import org.bukkit.Location;
@@ -26,7 +25,8 @@ public record CustomMob(
         NamespacedKey entityType,
         StatsObject stats,
 
-        Action onInteract
+        MobEventActions event,
+        boolean invulnerable
 ) {
 
     public static PluginNamespace<CustomMob> NAMESPACE = PluginNamespace.create("cmob");
@@ -36,7 +36,8 @@ public record CustomMob(
             PrimitiveCodec.STRING.fieldOf("name").forGetter(CustomMob::name),
             Codecs.NAMESPACED_KEY.fieldOf("entity_type").forGetter(CustomMob::entityType),
             StatsObject.CODEC.fieldOf("stats").forGetter(CustomMob::stats),
-            Action.CODEC.optionalFieldOf("on_interact", new Noop()).forGetter(CustomMob::onInteract)
+            MobEventActions.CODEC.optionalFieldOf("event", new MobEventActions(new Noop(), new Noop(), new Noop())).forGetter(CustomMob::event),
+            Codec.BOOL.optionalFieldOf("invulnerable", false).forGetter(CustomMob::invulnerable)
     ).apply(instance, CustomMob::new));
 
     public Entity spawn(Location loc) {
@@ -45,20 +46,22 @@ public record CustomMob(
             return null;
         }
 
-        var entity = loc.getWorld().spawnEntity(loc, EntityType.ZOMBIE, false);
+        var entity = loc.getWorld().spawnEntity(loc, EntityType.ENDERMAN, false);
         entity.getPersistentDataContainer().set(Core.key("id"), PersistentDataType.STRING, this.id.toString());
         entity.getPersistentDataContainer().set(Core.key("health"), PersistentDataType.DOUBLE, this.stats.get(Stats.MAX_HEALTH));
 
         if (entity instanceof LivingEntity le) {
-            le.setMaximumNoDamageTicks(0);
+            le.setMaximumNoDamageTicks(1);
             le.setRemoveWhenFarAway(false);
+            le.setPersistent(false);
+            
             le.registerAttribute(Attribute.SCALE);
             Objects.requireNonNull(le.getAttribute(Attribute.SCALE)).setBaseValue(this.stats.get(Stats.SCALE) / 100);
 
             le.registerAttribute(Attribute.ATTACK_DAMAGE);
             Objects.requireNonNull(le.getAttribute(Attribute.ATTACK_DAMAGE)).setBaseValue(this.stats.get(Stats.ATTACK_DAMAGE) * 2);
         }
-        
+
         return entity;
     }
 }

@@ -2,6 +2,8 @@ package akarahnet.data.mob;
 
 import akarahnet.Core;
 import akarahnet.data.items.Stats;
+import dev.akarah.actions.Environment;
+import dev.akarah.actions.values.Values;
 import dev.akarah.pluginpacks.data.PackRepository;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -21,17 +23,33 @@ public class MobLoop {
             return;
         }
 
+        var lifetime = e.getPersistentDataContainer().getOrDefault(Core.key("lifetime"), PersistentDataType.INTEGER, 0);
+        e.getPersistentDataContainer().set(
+                Core.key("lifetime"),
+                PersistentDataType.INTEGER,
+                lifetime
+        );
+
         var mob = PackRepository.getInstance()
                 .getRegistry(CustomMob.NAMESPACE)
                 .orElseThrow()
                 .get(NamespacedKey.fromString(id))
                 .orElseThrow();
 
+        var env = Environment.empty()
+                .parameter(Values.DEFAULT_ENTITY_NAME, e)
+                .parameter(NamespacedKey.fromString("lifetime"), lifetime);
+
+        mob.event().onTick().execute(env);
+
         if (e instanceof LivingEntity le) {
-            le.setNoDamageTicks(-1);
-            le.setArrowsInBody(0);
-            le.setFireTicks(0);
-            le.setVisualFire(false);
+            le.getScheduler().run(Core.getInstance(), task -> {
+                le.setNoDamageTicks(0);
+                le.setArrowsInBody(0);
+                le.setFireTicks(0);
+                le.setVisualFire(false);
+            }, () -> {
+            });
 
             var hp = le.getPersistentDataContainer().get(Core.key("health"), PersistentDataType.DOUBLE);
             if (hp == null) {

@@ -21,6 +21,7 @@ public class UseAbility implements Listener {
         if (StatsHolder.getInstance().getMana(event.getPlayer().getUniqueId()) < 15.0) {
             return;
         }
+
         StatsHolder.getInstance().setMana(
                 event.getPlayer().getUniqueId(),
                 StatsHolder.getInstance().getMana(event.getPlayer().getUniqueId()) - 15.0);
@@ -52,7 +53,18 @@ public class UseAbility implements Listener {
             for (var entity : newPos.getNearbyEntities(3, 3, 3)) {
                 if (entity.getPersistentDataContainer().has(Core.key("health")) && entity instanceof LivingEntity le
                         && !dmg.contains(entity.getUniqueId())) {
-                    le.damage(stats.get(Stats.ATTACK_DAMAGE) * (stats.get(Stats.TELEPORT_DAMAGE) / 100.0));
+
+                    StatsHolder.getInstance().setAttackCooldown(event.getPlayer().getUniqueId(), 0);
+                    le.damage(stats.get(Stats.ATTACK_DAMAGE) * (stats.get(Stats.TELEPORT_DAMAGE) / 100.0), event.getPlayer());
+                    StatsHolder.getInstance().setAttackCooldown(event.getPlayer().getUniqueId(), 0);
+
+                    le.getScheduler().run(Core.getInstance(), task -> {
+                        le.setNoDamageTicks(0);
+                        le.setArrowsInBody(0);
+                        le.setFireTicks(0);
+                        le.setVisualFire(false);
+                    }, () -> {
+                    });
                     dmg.add(entity.getUniqueId());
                 }
             }
