@@ -1,6 +1,5 @@
 package akarahnet.data.mob.spawning;
 
-import akarahnet.Core;
 import akarahnet.data.actions.AknCodecs;
 import akarahnet.data.mob.CustomMob;
 import com.mojang.serialization.Codec;
@@ -44,7 +43,7 @@ public record SpawnAround(Location center, double radius, int maxMobs) implement
                     .targets(RayTraceTarget.BLOCK)
             )).getHitPosition();
             mob.spawn(new Location(
-                    Bukkit.getWorld(Core.key("game_world")),
+                    Bukkit.getWorld("world"),
                     down.getX(),
                     down.getY(),
                     down.getZ()

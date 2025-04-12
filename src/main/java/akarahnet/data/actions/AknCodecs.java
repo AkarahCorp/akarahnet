@@ -1,6 +1,5 @@
 package akarahnet.data.actions;
 
-import akarahnet.Core;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.bukkit.Bukkit;
@@ -13,5 +12,5 @@ public interface AknCodecs {
             Codec.DOUBLE.fieldOf("z").forGetter(Location::z),
             Codec.FLOAT.optionalFieldOf("pitch", 0.0f).forGetter(Location::getPitch),
             Codec.FLOAT.optionalFieldOf("yaw", 0.0f).forGetter(Location::getYaw)
-    ).apply(instance, (x, y, z, pitch, yaw) -> new Location(Bukkit.getWorld(Core.key("game_world")), x, y, z, yaw, pitch)));
+    ).apply(instance, (x, y, z, pitch, yaw) -> new Location(Bukkit.getWorld("world"), x, y, z, yaw, pitch)));
 }

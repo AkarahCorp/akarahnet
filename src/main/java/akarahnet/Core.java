@@ -8,10 +8,9 @@ import akarahnet.player.PlayerLoop;
 import akarahnet.player.event.DamageHandler;
 import akarahnet.player.event.MapEvents;
 import akarahnet.player.event.UseAbility;
-import akarahnet.world.EndBiomeProvider;
-import akarahnet.world.VoidChunkGenerator;
 import dev.akarah.pluginpacks.data.PackRepository;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
@@ -31,15 +30,6 @@ public final class Core extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        WorldCreator.ofKey(Core.key("game_world"))
-                .seed(0)
-                .type(WorldType.FLAT)
-                .generateStructures(false)
-                .biomeProvider(new EndBiomeProvider())
-                .generator(new VoidChunkGenerator())
-                .environment(World.Environment.THE_END)
-                .createWorld();
-
         INSTANCE = this;
 
         PackRepository.getInstance().reloadRegistries();
