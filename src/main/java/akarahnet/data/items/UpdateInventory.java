@@ -24,15 +24,15 @@ public class UpdateInventory {
         if (original.getPersistentDataContainer().has(Core.key("id"), PersistentDataType.STRING)) {
             var amount = original.getAmount();
             var id = original.getPersistentDataContainer().get(Core.key("id"), PersistentDataType.STRING);
+            assert id != null;
             var key = NamespacedKey.fromString(id);
             var item = PackRepository.getInstance().getRegistry(CustomItem.NAMESPACE).orElseThrow().get(key);
             if (item.isPresent()) {
                 var originalPdc = original.getPersistentDataContainer();
                 var newItem = item.get().toItemStack();
                 newItem.setAmount(amount);
-                newItem.editPersistentDataContainer(pdc -> {
-                    originalPdc.copyTo(pdc, true);
-                });
+                newItem.editMeta(meta -> originalPdc.copyTo(meta.getPersistentDataContainer(), true));
+
                 return newItem;
             }
             return original;

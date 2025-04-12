@@ -3,6 +3,7 @@ version: '1.0-SNAPSHOT'
 main: akarahnet.Core
 api-version: '1.21'
 bootstrapper: akarahnet.Bootstrapper
+folia-supported: true
 
 dependencies:
   bootstrap:

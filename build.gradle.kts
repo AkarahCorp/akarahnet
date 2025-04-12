@@ -33,17 +33,24 @@ dependencies {
 
     compileOnly("com.mojang:datafixerupper:8.0.16")
     compileOnly("com.github.AkarahCorp:plugin-packs:ddc6b363b1")
-    compileOnly("com.github.AkarahCorp:actions:621635629d")
+    compileOnly("com.github.AkarahCorp:actions:519a41a039")
 }
 
-// Configuring the runServer task provided by the run-paper plugin.
-// Replace xyz.jpenilla.runpaper.RunPaperTask with the correct task type if necessary.
+runPaper.folia.registerTask().configure {
+    minecraftVersion("1.21.4")
+
+    downloadPlugins {
+        url("https://jitpack.io/com/github/AkarahCorp/plugin-packs/ddc6b363b1/plugin-packs-ddc6b363b1.jar")
+        url("https://jitpack.io/com/github/AkarahCorp/actions/519a41a039/actions-519a41a039.jar")
+    }
+}
+
 tasks.runServer {
     minecraftVersion("1.21.4")
 
     downloadPlugins {
         url("https://jitpack.io/com/github/AkarahCorp/plugin-packs/ddc6b363b1/plugin-packs-ddc6b363b1.jar")
-        url("https://jitpack.io/com/github/AkarahCorp/actions/621635629d/actions-621635629d.jar")
+        url("https://jitpack.io/com/github/AkarahCorp/actions/519a41a039/actions-519a41a039.jar")
 
         modrinth("axiom-paper-plugin", "4.0.4+1.21.4")
     }

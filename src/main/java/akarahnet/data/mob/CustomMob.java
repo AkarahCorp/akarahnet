@@ -9,10 +9,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.akarah.actions.steps.generic.Noop;
 import dev.akarah.pluginpacks.Codecs;
 import dev.akarah.pluginpacks.data.PluginNamespace;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.persistence.PersistentDataType;
@@ -36,35 +36,35 @@ public record CustomMob(
             Configuration.CODEC.optionalFieldOf("config", Configuration.DEFAULT).forGetter(CustomMob::configuration)
     ).apply(instance, CustomMob::new));
 
-    public Entity spawn(Location loc) {
+    public void spawn(Location loc) {
         var entityTypeValue = EntityType.fromName(this.entityType.value().toUpperCase());
         if (entityTypeValue == null) {
-            return null;
+            return;
         }
 
-        var entity = loc.getWorld().spawnEntity(loc, entityTypeValue, false);
-        entity.getPersistentDataContainer().set(Core.key("id"), PersistentDataType.STRING, this.id.toString());
-        entity.getPersistentDataContainer().set(Core.key("health"), PersistentDataType.DOUBLE, this.stats.get(Stats.MAX_HEALTH));
+        Bukkit.getServer().getRegionScheduler().run(Core.getInstance(), loc, task -> {
+            var entity = loc.getWorld().spawnEntity(loc, entityTypeValue, false);
+            entity.getPersistentDataContainer().set(Core.key("id"), PersistentDataType.STRING, this.id.toString());
+            entity.getPersistentDataContainer().set(Core.key("health"), PersistentDataType.DOUBLE, this.stats.get(Stats.MAX_HEALTH));
 
-        if (entity instanceof LivingEntity le) {
-            le.setMaximumNoDamageTicks(1);
-            le.setRemoveWhenFarAway(false);
-            le.setPersistent(false);
+            if (entity instanceof LivingEntity le) {
+                le.setMaximumNoDamageTicks(1);
+                le.setRemoveWhenFarAway(false);
+                le.setPersistent(false);
 
-            Objects.requireNonNull(le.getAttribute(Attribute.SCALE)).setBaseValue(this.stats.get(Stats.SCALE) / 100);
+                Objects.requireNonNull(le.getAttribute(Attribute.SCALE)).setBaseValue(this.stats.get(Stats.SCALE) / 100);
 
-            le.registerAttribute(Attribute.ATTACK_DAMAGE);
-            Objects.requireNonNull(le.getAttribute(Attribute.ATTACK_DAMAGE)).setBaseValue(this.stats.get(Stats.ATTACK_DAMAGE) * 2);
+                le.registerAttribute(Attribute.ATTACK_DAMAGE);
+                Objects.requireNonNull(le.getAttribute(Attribute.ATTACK_DAMAGE)).setBaseValue(this.stats.get(Stats.ATTACK_DAMAGE) * 2);
 
-            if (this.configuration.noAI()) {
-                le.setAI(false);
+                if (this.configuration.noAI()) {
+                    le.setAI(false);
+                }
+                if (this.configuration.invulnerable()) {
+                    le.setInvulnerable(true);
+                }
             }
-            if (this.configuration.invulnerable()) {
-                le.setInvulnerable(true);
-            }
-        }
-
-        return entity;
+        });
     }
 
     public record Configuration(
