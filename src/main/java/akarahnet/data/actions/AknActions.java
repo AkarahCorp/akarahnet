@@ -1,5 +1,6 @@
-package akarahnet.actions;
+package akarahnet.data.actions;
 
+import akarahnet.data.actions.util.DebugLog;
 import com.mojang.serialization.MapCodec;
 import dev.akarah.actions.steps.Action;
 import dev.akarah.actions.steps.ActionType;

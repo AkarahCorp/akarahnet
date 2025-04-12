@@ -1,8 +1,9 @@
-package akarahnet.data.mob;
+package akarahnet.data.mob.event;
 
 import akarahnet.Core;
-import akarahnet.data.items.Stats;
-import akarahnet.data.items.StatsHolder;
+import akarahnet.data.items.stats.Stats;
+import akarahnet.data.items.stats.StatsHolder;
+import akarahnet.data.mob.CustomMob;
 import com.destroystokyo.paper.event.entity.EndermanEscapeEvent;
 import dev.akarah.actions.Environment;
 import dev.akarah.actions.values.Values;

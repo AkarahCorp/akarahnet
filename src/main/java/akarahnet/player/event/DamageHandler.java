@@ -1,6 +1,6 @@
-package akarahnet.player;
+package akarahnet.player.event;
 
-import akarahnet.data.items.StatsHolder;
+import akarahnet.data.items.stats.StatsHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;

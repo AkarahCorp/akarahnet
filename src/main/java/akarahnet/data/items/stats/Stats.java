@@ -1,4 +1,4 @@
-package akarahnet.data.items;
+package akarahnet.data.items.stats;
 
 import org.bukkit.NamespacedKey;
 
@@ -12,6 +12,6 @@ public class Stats {
 
     public static NamespacedKey TELEPORT_RANGE = NamespacedKey.minecraft("teleport_range");
     public static NamespacedKey TELEPORT_DAMAGE = NamespacedKey.minecraft("teleport_damage");
-    
+
     public static NamespacedKey SCALE = NamespacedKey.minecraft("scale");
 }

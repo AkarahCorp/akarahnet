@@ -1,4 +1,4 @@
-package akarahnet.actions;
+package akarahnet.data.actions.util;
 
 import akarahnet.Core;
 import com.mojang.serialization.MapCodec;

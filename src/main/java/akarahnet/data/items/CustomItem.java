@@ -1,6 +1,7 @@
 package akarahnet.data.items;
 
 import akarahnet.Core;
+import akarahnet.data.items.stats.StatsObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.PrimitiveCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

@@ -1,6 +1,7 @@
-package akarahnet.data.items;
+package akarahnet.data.items.stats;
 
 import akarahnet.Core;
+import akarahnet.data.items.CustomItem;
 import dev.akarah.pluginpacks.data.PackRepository;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;

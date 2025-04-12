@@ -1,7 +1,7 @@
 package akarahnet.data.mob;
 
 import akarahnet.Core;
-import akarahnet.data.items.Stats;
+import akarahnet.data.items.stats.Stats;
 import dev.akarah.actions.Environment;
 import dev.akarah.actions.values.Values;
 import dev.akarah.pluginpacks.data.PackRepository;

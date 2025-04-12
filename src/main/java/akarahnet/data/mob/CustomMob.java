@@ -1,8 +1,9 @@
 package akarahnet.data.mob;
 
 import akarahnet.Core;
-import akarahnet.data.items.Stats;
-import akarahnet.data.items.StatsObject;
+import akarahnet.data.items.stats.Stats;
+import akarahnet.data.items.stats.StatsObject;
+import akarahnet.data.mob.event.MobEventActions;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.PrimitiveCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

@@ -1,4 +1,4 @@
-package akarahnet.data.items;
+package akarahnet.data.items.stats;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.PrimitiveCodec;

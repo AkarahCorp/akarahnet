@@ -1,9 +1,9 @@
 package akarahnet;
 
-import akarahnet.actions.AknActions;
 import akarahnet.commands.CItemCommand;
 import akarahnet.commands.CMobCommand;
 import akarahnet.commands.CReloadPacksCommand;
+import akarahnet.data.actions.AknActions;
 import akarahnet.data.items.CustomItem;
 import akarahnet.data.mob.CustomMob;
 import akarahnet.data.mob.spawning.SpawnRule;

@@ -1,4 +1,4 @@
-package akarahnet.actions;
+package akarahnet.data.actions;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

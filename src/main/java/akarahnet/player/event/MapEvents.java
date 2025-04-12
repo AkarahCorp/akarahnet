@@ -1,4 +1,4 @@
-package akarahnet.player;
+package akarahnet.player.event;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.EnderCrystal;

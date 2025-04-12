@@ -1,4 +1,4 @@
-package akarahnet.data.mob;
+package akarahnet.data.mob.event;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

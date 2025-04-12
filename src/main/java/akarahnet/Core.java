@@ -1,13 +1,13 @@
 package akarahnet;
 
 import akarahnet.data.items.UpdateInventory;
-import akarahnet.data.mob.MobEventHandlers;
 import akarahnet.data.mob.MobLoop;
+import akarahnet.data.mob.event.MobEventHandlers;
 import akarahnet.data.mob.spawning.SpawnRuleInstance;
-import akarahnet.player.DamageHandler;
-import akarahnet.player.MapEvents;
 import akarahnet.player.PlayerLoop;
-import akarahnet.player.UseAbility;
+import akarahnet.player.event.DamageHandler;
+import akarahnet.player.event.MapEvents;
+import akarahnet.player.event.UseAbility;
 import dev.akarah.pluginpacks.data.PackRepository;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;

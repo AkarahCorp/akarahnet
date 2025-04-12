@@ -1,6 +1,6 @@
 package akarahnet.data.mob.spawning;
 
-import akarahnet.actions.AknCodecs;
+import akarahnet.data.actions.AknCodecs;
 import akarahnet.data.mob.CustomMob;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
