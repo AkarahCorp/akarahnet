@@ -1,5 +1,6 @@
 package akarahnet.commands;
 
+import akarahnet.Core;
 import dev.akarah.pluginpacks.data.PackRepository;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.Bukkit;
@@ -10,7 +11,7 @@ public class CReloadPacksCommand {
     public static void register(Commands commands) {
         commands.register(Commands.literal("creloadpacks")
                 .executes(ctx -> {
-                    for (var entity : Objects.requireNonNull(Bukkit.getWorld("world")).getEntities()) {
+                    for (var entity : Objects.requireNonNull(Bukkit.getWorld(Core.key("game_world"))).getEntities()) {
                         try {
                             entity.remove();
                         } catch (UnsupportedOperationException ignored) {

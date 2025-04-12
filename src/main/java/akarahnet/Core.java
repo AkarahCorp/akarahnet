@@ -8,9 +8,10 @@ import akarahnet.player.PlayerLoop;
 import akarahnet.player.event.DamageHandler;
 import akarahnet.player.event.MapEvents;
 import akarahnet.player.event.UseAbility;
+import akarahnet.world.EndBiomeProvider;
+import akarahnet.world.VoidChunkGenerator;
 import dev.akarah.pluginpacks.data.PackRepository;
-import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
@@ -25,11 +26,20 @@ public final class Core extends JavaPlugin implements Listener {
     }
 
     public static NamespacedKey key(String path) {
-        return new NamespacedKey(INSTANCE, path);
+        return new NamespacedKey("akarahnet", path);
     }
 
     @Override
     public void onEnable() {
+        WorldCreator.ofKey(Core.key("game_world"))
+                .seed(0)
+                .type(WorldType.FLAT)
+                .generateStructures(false)
+                .biomeProvider(new EndBiomeProvider())
+                .generator(new VoidChunkGenerator())
+                .environment(World.Environment.THE_END)
+                .createWorld();
+
         INSTANCE = this;
 
         PackRepository.getInstance().reloadRegistries();
@@ -39,6 +49,7 @@ public final class Core extends JavaPlugin implements Listener {
         this.getServer().getPluginManager().registerEvents(new DamageHandler(), this);
         this.getServer().getPluginManager().registerEvents(new MapEvents(), this);
         this.getServer().getPluginManager().registerEvents(new MobEventHandlers(), this);
+
 
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(Core.getInstance(), task -> {
             for (var player : Bukkit.getServer().getOnlinePlayers()) {
