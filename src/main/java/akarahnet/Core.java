@@ -64,14 +64,14 @@ public final class Core extends JavaPlugin implements Listener {
     @EventHandler
     public void join(PlayerJoinEvent event) {
         var player = event.getPlayer();
-        player.getScheduler().run(Core.getInstance(), subtask -> PlayerLoop.tick(player), () -> {
-        });
+        player.getScheduler().runAtFixedRate(Core.getInstance(), subtask -> PlayerLoop.tick(player), () -> {
+        }, 1, 1);
     }
 
     @EventHandler
     public void spawnEntity(EntitySpawnEvent event) {
         var entity = event.getEntity();
         entity.getScheduler().runAtFixedRate(Core.getInstance(), subtask -> MobLoop.tick(entity), () -> {
-        }, 1, 20);
+        }, 1, 1);
     }
 }

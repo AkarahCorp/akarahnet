@@ -35,12 +35,20 @@ public class StatsHolder {
         currentHealth.put(player, hp);
     }
 
+    public void addHealth(UUID player, double hp) {
+        currentHealth.put(player, currentHealth.getOrDefault(player, 100000.0) + hp);
+    }
+
     public double getMana(UUID player) {
         return currentMana.getOrDefault(player, 100.0);
     }
 
     public void setMana(UUID player, double mana) {
         currentMana.put(player, mana);
+    }
+
+    public void addMana(UUID player, double mana) {
+        currentMana.put(player, currentMana.getOrDefault(player, 100000.0) + mana);
     }
 
     public int getAttackCooldown(UUID player) {
@@ -51,12 +59,16 @@ public class StatsHolder {
         attackCooldown.put(player, cd);
     }
 
+    public void tickAttackCooldown(UUID player) {
+        attackCooldown.put(player, attackCooldown.getOrDefault(player, 0) - 1);
+    }
+
     public void updatePlayerStats(Player p) {
         if (!currentHealth.containsKey(p.getUniqueId())) {
-            currentHealth.put(p.getUniqueId(), 100.0);
+            currentHealth.put(p.getUniqueId(), 100000.0);
         }
         if (!currentMana.containsKey(p.getUniqueId())) {
-            currentMana.put(p.getUniqueId(), 100.0);
+            currentMana.put(p.getUniqueId(), 100000.0);
         }
         var baseStats = StatsObject.of()
                 .add(Stats.MAX_HEALTH, 100)

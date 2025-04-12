@@ -45,8 +45,8 @@ public record CustomMob(
 
         Bukkit.getServer().getRegionScheduler().run(Core.getInstance(), loc, task -> {
             var entity = loc.getWorld().spawnEntity(loc, entityTypeValue, false);
+            MobUtils.setHealth(entity, this.stats.get(Stats.MAX_HEALTH));
             entity.getPersistentDataContainer().set(Core.key("id"), PersistentDataType.STRING, this.id.toString());
-            entity.getPersistentDataContainer().set(Core.key("health"), PersistentDataType.DOUBLE, this.stats.get(Stats.MAX_HEALTH));
 
             if (entity instanceof LivingEntity le) {
                 le.setMaximumNoDamageTicks(1);

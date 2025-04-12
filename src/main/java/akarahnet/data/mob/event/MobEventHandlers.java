@@ -3,11 +3,10 @@ package akarahnet.data.mob.event;
 import akarahnet.Core;
 import akarahnet.data.items.stats.Stats;
 import akarahnet.data.items.stats.StatsHolder;
-import akarahnet.data.mob.CustomMob;
+import akarahnet.data.mob.MobUtils;
 import com.destroystokyo.paper.event.entity.EndermanEscapeEvent;
 import dev.akarah.actions.Environment;
 import dev.akarah.actions.values.Values;
-import dev.akarah.pluginpacks.data.PackRepository;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -18,7 +17,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.persistence.PersistentDataType;
 
 public class MobEventHandlers implements Listener {
     @EventHandler
@@ -28,14 +26,7 @@ public class MobEventHandlers implements Listener {
         }
 
         if (event.getEntity().getPersistentDataContainer().has(Core.key("health"))) {
-            var id = event.getEntity().getPersistentDataContainer().get(Core.key("id"), PersistentDataType.STRING);
-            if (id == null) {
-                return;
-            }
-
-            var mob = PackRepository.getInstance().getRegistry(CustomMob.NAMESPACE).orElseThrow()
-                    .get(NamespacedKey.fromString(id)).orElseThrow();
-
+            var mob = MobUtils.getMobType(event.getEntity());
             if (mob.configuration().invulnerable()) {
                 event.setCancelled(true);
                 if (event.getDamage() <= 10000000.0) {
@@ -49,17 +40,15 @@ public class MobEventHandlers implements Listener {
 
             mob.configuration().event().onTakeDamage().execute(env);
 
-            var hp = event.getEntity().getPersistentDataContainer().get(Core.key("health"), PersistentDataType.DOUBLE);
-            if (hp == null) {
-                hp = 0.0;
-            }
+            var hp = MobUtils.getHealth(event.getEntity());
 
             var fhp = hp - event.getDamage();
             if (fhp <= 0) {
                 event.getEntity().remove();
             } else {
-                event.getEntity().getPersistentDataContainer().set(Core.key("health"), PersistentDataType.DOUBLE, fhp);
+                MobUtils.setHealth(event.getEntity(), fhp);
             }
+
             event.setDamage(0);
             if (event.getEntity() instanceof LivingEntity le) {
                 le.getScheduler().run(Core.getInstance(), task -> {
@@ -76,21 +65,22 @@ public class MobEventHandlers implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void playerAttackEntity(EntityDamageByEntityEvent event) {
+        var sh = StatsHolder.getInstance();
         if (event.getDamager() instanceof Player p && event.getEntity() instanceof LivingEntity entity) {
             entity.setNoDamageTicks(0);
 
-            if (StatsHolder.getInstance().getAttackCooldown(p.getUniqueId()) > 0) {
+            if (sh.getAttackCooldown(p.getUniqueId()) > 0) {
                 event.setCancelled(true);
                 event.setDamage(0);
                 return;
             }
 
-            StatsHolder.getInstance().setAttackCooldown(
+            sh.setAttackCooldown(
                     p.getUniqueId(),
-                    10 - ((int) StatsHolder.getInstance().getStatsFor(p.getUniqueId()).get(Stats.ATTACK_SPEED) / 10)
+                    10 - ((int) sh.getStatsFor(p.getUniqueId()).get(Stats.ATTACK_SPEED) / 10)
             );
             event.setDamage(
-                    StatsHolder.getInstance().getStatsFor(p.getUniqueId()).get(Stats.ATTACK_DAMAGE)
+                    sh.getStatsFor(p.getUniqueId()).get(Stats.ATTACK_DAMAGE)
             );
 
         }
@@ -107,14 +97,8 @@ public class MobEventHandlers implements Listener {
             return;
         }
 
-        var id = event.getRightClicked().getPersistentDataContainer().get(Core.key("id"), PersistentDataType.STRING);
-        if (id == null) {
-            return;
-        }
-
         if (event.getHand() == EquipmentSlot.HAND) {
-            var mob = PackRepository.getInstance().getRegistry(CustomMob.NAMESPACE).orElseThrow()
-                    .get(NamespacedKey.fromString(id)).orElseThrow();
+            var mob = MobUtils.getMobType(event.getRightClicked());
 
             var env = Environment.empty()
                     .parameter(NamespacedKey.fromString("entity/clicked"), event.getRightClicked())

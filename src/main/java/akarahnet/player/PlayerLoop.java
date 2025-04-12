@@ -18,47 +18,60 @@ public class PlayerLoop {
     public static AtomicInteger time = new AtomicInteger(0);
 
     public static void tick(Player p) {
+        PlayerLoop.tryUpdateInventory(p);
+        PlayerLoop.updateStats(p);
+        PlayerLoop.updateAttributes(p);
+        PlayerLoop.sendActionBar(p);
+        PlayerLoop.sendBossBar(p);
+    }
+
+    public static void tryUpdateInventory(Player p) {
         if (time.get() % 20 == 0) {
             UpdateInventory.update(p.getInventory());
         }
-        StatsHolder.getInstance().updatePlayerStats(p);
+    }
 
-        var stats = StatsHolder.getInstance().getStatsFor(p.getUniqueId());
+    public static void updateStats(Player p) {
+        var sh = StatsHolder.getInstance();
 
-        StatsHolder.getInstance().setHealth(
-                p.getUniqueId(),
-                StatsHolder.getInstance().getHealth(p.getUniqueId())
-                        + stats.get(Stats.MAX_HEALTH) / 2000);
+        sh.updatePlayerStats(p);
 
-        StatsHolder.getInstance().setMana(
-                p.getUniqueId(),
-                StatsHolder.getInstance().getMana(p.getUniqueId())
-                        + stats.get(Stats.MAX_MANA) / 2000);
+        var stats = sh.getStatsFor(p.getUniqueId());
 
-        StatsHolder.getInstance().setAttackCooldown(
-                p.getUniqueId(),
-                StatsHolder.getInstance().getAttackCooldown(p.getUniqueId()) - 1
-        );
+        sh.addHealth(p.getUniqueId(), stats.get(Stats.MAX_HEALTH) / 2000);
+        sh.addMana(p.getUniqueId(), stats.get(Stats.MAX_MANA) / 2000);
 
-        if (StatsHolder.getInstance().getHealth(p.getUniqueId()) > stats.get(Stats.MAX_HEALTH)) {
-            StatsHolder.getInstance().setHealth(
+        if (sh.getHealth(p.getUniqueId()) >= stats.get(Stats.MAX_HEALTH)) {
+            sh.setHealth(
                     p.getUniqueId(),
                     stats.get(Stats.MAX_HEALTH));
         }
 
-        if (StatsHolder.getInstance().getMana(p.getUniqueId()) > stats.get(Stats.MAX_MANA)) {
-            StatsHolder.getInstance().setMana(
+        if (sh.getMana(p.getUniqueId()) >= stats.get(Stats.MAX_MANA)) {
+            sh.setMana(
                     p.getUniqueId(),
                     stats.get(Stats.MAX_MANA));
         }
-        var hp = StatsHolder.getInstance().getHealth(p.getUniqueId());
-        var mana = StatsHolder.getInstance().getMana(p.getUniqueId());
+
+        sh.tickAttackCooldown(p.getUniqueId());
+
+    }
+
+    public static void updateAttributes(Player p) {
+        var stats = StatsHolder.getInstance().getStatsFor(p.getUniqueId());
         p.setHealth(20);
         p.setFoodLevel(20);
         p.setSaturation(20);
         p.setTotalExperience(0);
         Objects.requireNonNull(p.getAttribute(Attribute.ENTITY_INTERACTION_RANGE)).setBaseValue(stats.get(Stats.ATTACK_RANGE));
         Objects.requireNonNull(p.getAttribute(Attribute.MOVEMENT_SPEED)).setBaseValue(stats.get(Stats.WALK_SPEED) / 1000);
+    }
+
+    public static void sendActionBar(Player p) {
+        var sh = StatsHolder.getInstance();
+        var stats = sh.getStatsFor(p.getUniqueId());
+        var hp = sh.getHealth(p.getUniqueId());
+        var mana = sh.getMana(p.getUniqueId());
 
         p.sendActionBar(
                 Component.empty()
@@ -77,7 +90,9 @@ public class PlayerLoop {
                         .decoration(TextDecoration.BOLD, true)
 
         );
+    }
 
+    public static void sendBossBar(Player p) {
         for (var bar : p.activeBossBars()) {
             p.hideBossBar(bar);
         }
