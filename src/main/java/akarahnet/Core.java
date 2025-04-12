@@ -3,6 +3,7 @@ package akarahnet;
 import akarahnet.data.items.UpdateInventory;
 import akarahnet.data.mob.MobEventHandlers;
 import akarahnet.data.mob.MobLoop;
+import akarahnet.data.mob.spawning.SpawnRuleInstance;
 import akarahnet.player.DamageHandler;
 import akarahnet.player.MapEvents;
 import akarahnet.player.PlayerLoop;
@@ -58,6 +59,7 @@ public final class Core extends JavaPlugin {
                 }
             }
 
+            SpawnRuleInstance.doSpawning();
         }, 1, 1);
     }
 

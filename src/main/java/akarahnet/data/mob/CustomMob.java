@@ -24,11 +24,8 @@ public record CustomMob(
         String name,
         NamespacedKey entityType,
         StatsObject stats,
-
-        MobEventActions event,
-        boolean invulnerable
+        Configuration configuration
 ) {
-
     public static PluginNamespace<CustomMob> NAMESPACE = PluginNamespace.create("cmob");
 
     public static Codec<CustomMob> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -36,8 +33,7 @@ public record CustomMob(
             PrimitiveCodec.STRING.fieldOf("name").forGetter(CustomMob::name),
             Codecs.NAMESPACED_KEY.fieldOf("entity_type").forGetter(CustomMob::entityType),
             StatsObject.CODEC.fieldOf("stats").forGetter(CustomMob::stats),
-            MobEventActions.CODEC.optionalFieldOf("event", new MobEventActions(new Noop(), new Noop(), new Noop())).forGetter(CustomMob::event),
-            Codec.BOOL.optionalFieldOf("invulnerable", false).forGetter(CustomMob::invulnerable)
+            Configuration.CODEC.optionalFieldOf("config", Configuration.DEFAULT).forGetter(CustomMob::configuration)
     ).apply(instance, CustomMob::new));
 
     public Entity spawn(Location loc) {
@@ -46,7 +42,7 @@ public record CustomMob(
             return null;
         }
 
-        var entity = loc.getWorld().spawnEntity(loc, EntityType.ENDERMAN, false);
+        var entity = loc.getWorld().spawnEntity(loc, entityTypeValue, false);
         entity.getPersistentDataContainer().set(Core.key("id"), PersistentDataType.STRING, this.id.toString());
         entity.getPersistentDataContainer().set(Core.key("health"), PersistentDataType.DOUBLE, this.stats.get(Stats.MAX_HEALTH));
 
@@ -54,14 +50,38 @@ public record CustomMob(
             le.setMaximumNoDamageTicks(1);
             le.setRemoveWhenFarAway(false);
             le.setPersistent(false);
-            
-            le.registerAttribute(Attribute.SCALE);
+
             Objects.requireNonNull(le.getAttribute(Attribute.SCALE)).setBaseValue(this.stats.get(Stats.SCALE) / 100);
 
             le.registerAttribute(Attribute.ATTACK_DAMAGE);
             Objects.requireNonNull(le.getAttribute(Attribute.ATTACK_DAMAGE)).setBaseValue(this.stats.get(Stats.ATTACK_DAMAGE) * 2);
+
+            if (this.configuration.noAI()) {
+                le.setAI(false);
+            }
+            if (this.configuration.invulnerable()) {
+                le.setInvulnerable(true);
+            }
         }
 
         return entity;
+    }
+
+    public record Configuration(
+            MobEventActions event,
+            boolean invulnerable,
+            boolean noAI
+    ) {
+        public static Codec<Configuration> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                MobEventActions.CODEC.optionalFieldOf("event", new MobEventActions(new Noop(), new Noop(), new Noop())).forGetter(Configuration::event),
+                Codec.BOOL.optionalFieldOf("invulnerable", false).forGetter(Configuration::invulnerable),
+                Codec.BOOL.optionalFieldOf("no_ai", false).forGetter(Configuration::noAI)
+        ).apply(instance, Configuration::new));
+
+        public static Configuration DEFAULT = new Configuration(
+                new MobEventActions(new Noop(), new Noop(), new Noop()),
+                false,
+                false
+        );
     }
 }

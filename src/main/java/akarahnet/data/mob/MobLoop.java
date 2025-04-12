@@ -40,7 +40,7 @@ public class MobLoop {
                 .parameter(Values.DEFAULT_ENTITY_NAME, e)
                 .parameter(NamespacedKey.fromString("lifetime"), lifetime);
 
-        mob.event().onTick().execute(env);
+        mob.configuration().event().onTick().execute(env);
 
         if (e instanceof LivingEntity le) {
             le.getScheduler().run(Core.getInstance(), task -> {

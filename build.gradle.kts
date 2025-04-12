@@ -32,8 +32,8 @@ dependencies {
     paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
 
     compileOnly("com.mojang:datafixerupper:8.0.16")
-    compileOnly("com.github.AkarahCorp:plugin-packs:7936b9cd88")
-    compileOnly("com.github.AkarahCorp:actions:265d0ca3e5")
+    compileOnly("com.github.AkarahCorp:plugin-packs:ddc6b363b1")
+    compileOnly("com.github.AkarahCorp:actions:621635629d")
 }
 
 // Configuring the runServer task provided by the run-paper plugin.
@@ -42,8 +42,8 @@ tasks.runServer {
     minecraftVersion("1.21.4")
 
     downloadPlugins {
-        url("https://jitpack.io/com/github/AkarahCorp/plugin-packs/7936b9cd88/plugin-packs-7936b9cd88.jar")
-        url("https://jitpack.io/com/github/AkarahCorp/actions/265d0ca3e5/actions-265d0ca3e5.jar")
+        url("https://jitpack.io/com/github/AkarahCorp/plugin-packs/ddc6b363b1/plugin-packs-ddc6b363b1.jar")
+        url("https://jitpack.io/com/github/AkarahCorp/actions/621635629d/actions-621635629d.jar")
 
         modrinth("axiom-paper-plugin", "4.0.4+1.21.4")
     }

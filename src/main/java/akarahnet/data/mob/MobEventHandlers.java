@@ -31,11 +31,11 @@ public class MobEventHandlers implements Listener {
             if (id == null) {
                 return;
             }
-            
+
             var mob = PackRepository.getInstance().getRegistry(CustomMob.NAMESPACE).orElseThrow()
                     .get(NamespacedKey.fromString(id)).orElseThrow();
 
-            if (mob.invulnerable()) {
+            if (mob.configuration().invulnerable()) {
                 event.setCancelled(true);
                 if (event.getDamage() <= 10000000.0) {
                     event.setDamage(0);
@@ -46,7 +46,7 @@ public class MobEventHandlers implements Listener {
                     .parameter(Values.DEFAULT_ENTITY_NAME, event.getEntity())
                     .parameter(NamespacedKey.fromString("damage"), event.getDamage());
 
-            mob.event().onTakeDamage().execute(env);
+            mob.configuration().event().onTakeDamage().execute(env);
 
             var hp = event.getEntity().getPersistentDataContainer().get(Core.key("health"), PersistentDataType.DOUBLE);
             if (hp == null) {
@@ -119,7 +119,7 @@ public class MobEventHandlers implements Listener {
                     .parameter(NamespacedKey.fromString("entity/clicked"), event.getRightClicked())
                     .parameter(Values.DEFAULT_ENTITY_NAME, event.getPlayer());
 
-            mob.event().onInteract().execute(env);
+            mob.configuration().event().onInteract().execute(env);
         }
     }
 
