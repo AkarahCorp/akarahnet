@@ -12,30 +12,33 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayerLoop {
     public static AtomicInteger time = new AtomicInteger(0);
 
     public static void tick(Player p) {
-        PlayerLoop.tryUpdateInventory(p);
-        PlayerLoop.updateStats(p);
-        PlayerLoop.updateAttributes(p);
-        PlayerLoop.sendActionBar(p);
-        PlayerLoop.sendBossBar(p);
-    }
-
-    public static void tryUpdateInventory(Player p) {
+        try {
+            PlayerLoop.updateStats(p);
+        } catch (Exception ignored) {
+        }
+        if (time.get() % 3 == 0) {
+            try {
+                StatsHolder.getInstance().updatePlayerStats(p);
+            } catch (Exception ignored) {
+            }
+            PlayerLoop.updateAttributes(p);
+            PlayerLoop.sendActionBar(p);
+        }
         if (time.get() % 20 == 0) {
             UpdateInventory.update(p.getInventory());
+            PlayerLoop.sendBossBar(p);
         }
     }
 
     public static void updateStats(Player p) {
         var sh = StatsHolder.getInstance();
-
-        sh.updatePlayerStats(p);
-
         var stats = sh.getStatsFor(p.getUniqueId());
 
         sh.addHealth(p.getUniqueId(), stats.get(Stats.MAX_HEALTH) / 2000);
@@ -99,33 +102,38 @@ public class PlayerLoop {
 
         p.showBossBar(
                 BossBar.bossBar(
-                        Component.empty()
-                                .append(
-                                        Component.text("AKARAHNET")
-                                                .color(TextColor.color(
-                                                        200, 0,
-                                                        200))
-                                                .decoration(TextDecoration.BOLD,
-                                                        true))
-                                .append(
-                                        Component.text(" @ ")
-                                                .color(TextColor.color(
-                                                        133,
-                                                        133,
-                                                        133)))
-                                .append(
-                                        Component.text("mc.akarah.dev")
-                                                .color(TextColor.color(
-                                                        175, 0,
-                                                        175)))
-                                .append(
-                                        Component.text(" (Indev 0.0.1) ")
-                                                .color(TextColor.color(
-                                                        60, 60,
-                                                        60)))
-                                .asComponent(),
-                        0.0F,
-                        BossBar.Color.PURPLE,
-                        BossBar.Overlay.PROGRESS));
+                                Component.empty()
+                                        .append(
+                                                Component.text("AKARAHNET")
+                                                        .color(TextColor.color(
+                                                                200, 0,
+                                                                200))
+                                                        .decoration(TextDecoration.BOLD,
+                                                                true))
+                                        .append(
+                                                Component.text(" @ ")
+                                                        .color(TextColor.color(
+                                                                133,
+                                                                133,
+                                                                133)))
+                                        .append(
+                                                Component.text("mc.akarah.dev")
+                                                        .color(TextColor.color(
+                                                                175, 0,
+                                                                175)))
+                                        .append(
+                                                Component.text(" (Indev 0.0.1) ")
+                                                        .color(TextColor.color(
+                                                                60, 60,
+                                                                60)))
+                                        .asComponent(),
+                                0.0F,
+                                BossBar.Color.PURPLE,
+                                BossBar.Overlay.PROGRESS
+                        )
+                        .flags(Set.of(BossBar.Flag.CREATE_WORLD_FOG))
+        );
+        p.setViewDistance(5);
+        p.setSendViewDistance(5);
     }
 }
