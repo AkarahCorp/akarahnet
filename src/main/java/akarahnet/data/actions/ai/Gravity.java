@@ -19,7 +19,7 @@ public record Gravity(EntityValue targetEntity, double distance) implements Acti
             Codec.DOUBLE.fieldOf("distance").forGetter(Gravity::distance)
     ).apply(instance, Gravity::new));
 
-    public static ActionType TYPE = new ActionType(NamespacedKey.fromString("entity/gravity"));
+    public static ActionType TYPE = new ActionType(NamespacedKey.fromString("entity/physics/gravity"));
 
     @Override
     public void execute(Environment environment) {

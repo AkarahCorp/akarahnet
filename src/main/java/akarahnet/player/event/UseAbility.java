@@ -3,6 +3,9 @@ package akarahnet.player.event;
 import akarahnet.Core;
 import akarahnet.data.items.stats.Stats;
 import akarahnet.data.items.stats.StatsHolder;
+import akarahnet.data.mob.MobUtils;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
@@ -51,20 +54,34 @@ public class UseAbility implements Listener {
                     .spawn();
 
             for (var entity : newPos.getNearbyEntities(3, 3, 3)) {
-                if (entity.getPersistentDataContainer().has(Core.key("health")) && entity instanceof LivingEntity le
+                if (entity.getPersistentDataContainer().has(Core.key("health"))
                         && !dmg.contains(entity.getUniqueId())) {
 
                     StatsHolder.getInstance().setAttackCooldown(event.getPlayer().getUniqueId(), 0);
-                    le.damage(stats.get(Stats.ATTACK_DAMAGE) * (stats.get(Stats.TELEPORT_DAMAGE) / 100.0), event.getPlayer());
+                    var damage = stats.get(Stats.ATTACK_DAMAGE) * (stats.get(Stats.TELEPORT_DAMAGE) / 100.0);
+                    MobUtils.setHealth(entity, MobUtils.getHealth(entity) - damage);
+                    MobUtils.setCustomVelocity(entity, event.getPlayer().getLocation().getDirection().normalize().multiply(0.5));
+                    entity.playSound(
+                            Sound.sound()
+                                    .pitch(1)
+                                    .volume(1)
+                                    .seed(0)
+                                    .source(Sound.Source.MASTER)
+                                    .type(Key.key("minecraft:entity.enderman.hurt"))
+                                    .build()
+                    );
                     StatsHolder.getInstance().setAttackCooldown(event.getPlayer().getUniqueId(), 0);
 
-                    le.getScheduler().run(Core.getInstance(), task -> {
-                        le.setNoDamageTicks(0);
-                        le.setArrowsInBody(0);
-                        le.setFireTicks(0);
-                        le.setVisualFire(false);
-                    }, () -> {
-                    });
+                    if (entity instanceof LivingEntity le) {
+                        le.getScheduler().run(Core.getInstance(), task -> {
+                            le.setNoDamageTicks(0);
+                            le.setArrowsInBody(0);
+                            le.setFireTicks(0);
+                            le.setVisualFire(false);
+                        }, () -> {
+                        });
+                    }
+
                     dmg.add(entity.getUniqueId());
                 }
             }

@@ -15,15 +15,13 @@ import org.bukkit.util.Vector;
 public record TryApplyVelocity(EntityValue targetEntity) implements Action {
     public static MapCodec<TryApplyVelocity> CODEC = Value.ENTITY.optionalFieldOf("entity", Values.DEFAULT_ENTITY).xmap(TryApplyVelocity::new, TryApplyVelocity::targetEntity);
 
-    public static ActionType TYPE = new ActionType(NamespacedKey.fromString("entity/apply_velocity"));
+    public static ActionType TYPE = new ActionType(NamespacedKey.fromString("entity/physics/apply_velocity"));
 
     @Override
     public void execute(Environment environment) {
         var entity = environment.resolve(this.targetEntity());
         entity.getScheduler().run(Core.getInstance(), task -> {
             var loc = entity.getLocation();
-            System.out.println(MobUtils.getCustomVelocity(entity));
-
 
             var velocity = MobUtils.getCustomVelocity(entity);
 

@@ -3,7 +3,7 @@ package akarahnet;
 import akarahnet.commands.CItemCommand;
 import akarahnet.commands.CMobCommand;
 import akarahnet.commands.CReloadPacksCommand;
-import akarahnet.data.actions.AknActions;
+import akarahnet.data.actions.AknActionRegistry;
 import akarahnet.data.items.CustomItem;
 import akarahnet.data.mob.CustomMob;
 import akarahnet.data.mob.spawning.SpawnRule;
@@ -19,7 +19,7 @@ public class Bootstrapper implements PluginBootstrap {
     @Override
     public void bootstrap(@NotNull BootstrapContext bootstrapContext) {
         bootstrapContext.getLogger().info("Starting akarahnet bootstrapper");
-        AknActions.registerAll();
+        AknActionRegistry.registerAll();
         SpawnRule.registerAll();
 
         bootstrapContext.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
@@ -36,8 +36,6 @@ public class Bootstrapper implements PluginBootstrap {
                     PackRepository.RegistryInstance.create(CustomMob.CODEC, CustomMob.class));
             PackRepository.getInstance().addRegistry(SpawnRuleInstance.NAMESPACE,
                     PackRepository.RegistryInstance.create(SpawnRuleInstance.CODEC, SpawnRuleInstance.class));
-
-            System.out.println(SpawnRuleInstance.CODEC);
 
 
         } catch (Exception e) {

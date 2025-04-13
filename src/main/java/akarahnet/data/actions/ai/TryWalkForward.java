@@ -19,7 +19,7 @@ public record TryWalkForward(EntityValue targetEntity, double distance) implemen
             Codec.DOUBLE.fieldOf("distance").forGetter(TryWalkForward::distance)
     ).apply(instance, TryWalkForward::new));
 
-    public static ActionType TYPE = new ActionType(NamespacedKey.fromString("entity/walk_forward"));
+    public static ActionType TYPE = new ActionType(NamespacedKey.fromString("entity/ai/walk_forward"));
 
     @Override
     public void execute(Environment environment) {

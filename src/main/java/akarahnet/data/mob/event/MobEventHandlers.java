@@ -83,8 +83,8 @@ public class MobEventHandlers implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void playerAttackEntity(EntityDamageByEntityEvent event) {
         var sh = StatsHolder.getInstance();
-        if (event.getDamager() instanceof Player p && event.getEntity() instanceof LivingEntity entity) {
-            entity.setNoDamageTicks(0);
+        if (event.getDamager() instanceof Player p) {
+            var entity = event.getEntity();
 
             if (sh.getAttackCooldown(p.getUniqueId()) > 0) {
                 event.setCancelled(true);
@@ -99,7 +99,7 @@ public class MobEventHandlers implements Listener {
             event.setDamage(
                     sh.getStatsFor(p.getUniqueId()).get(Stats.ATTACK_DAMAGE)
             );
-
+            MobUtils.setCustomVelocity(entity, p.getLocation().getDirection().normalize().setY(0.1));
         }
     }
 

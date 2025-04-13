@@ -20,7 +20,7 @@ public record TryJump(EntityValue targetEntity, double distance) implements Acti
             Codec.DOUBLE.fieldOf("distance").forGetter(TryJump::distance)
     ).apply(instance, TryJump::new));
 
-    public static ActionType TYPE = new ActionType(NamespacedKey.fromString("entity/jump"));
+    public static ActionType TYPE = new ActionType(NamespacedKey.fromString("entity/ai/jump"));
 
     @Override
     public void execute(Environment environment) {

@@ -5,6 +5,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.Title;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,10 +20,10 @@ public class DamageHandler implements Listener {
     public void onDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player p) {
             var hp = StatsHolder.getInstance().getHealth(p.getUniqueId());
-            if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
-                hp -= event.getDamage() * 3;
-            } else {
-                hp -= event.getDamage();
+            switch (event.getCause()) {
+                case FALL -> hp -= event.getDamage() * 3;
+                case VOID -> hp -= event.getDamage() * 20;
+                default -> hp -= event.getDamage();
             }
             StatsHolder.getInstance().setHealth(p.getUniqueId(), hp);
 
@@ -36,6 +38,7 @@ public class DamageHandler implements Listener {
                                         Duration.ofMillis(100),
                                         Duration.ofMillis(2000),
                                         Duration.ofMillis(100))));
+                p.teleportAsync(new Location(Bukkit.getWorld("world"), 6.5, 75, 24.5));
                 StatsHolder.getInstance().setHealth(p.getUniqueId(), 10000);
             }
         }

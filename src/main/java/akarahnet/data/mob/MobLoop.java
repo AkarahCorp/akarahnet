@@ -29,7 +29,7 @@ public class MobLoop {
         e.getPersistentDataContainer().set(
                 Core.key("lifetime"),
                 PersistentDataType.INTEGER,
-                lifetime
+                lifetime + 1
         );
 
         if (!e.getPersistentDataContainer().has(Core.key("id"))) {
@@ -86,7 +86,6 @@ public class MobLoop {
         var pdc = e.getPersistentDataContainer();
         var pos = e.getLocation();
         var pitch = MobUtils.getYaw(e);
-        System.out.println(pos);
 
         if (pdc.has(Core.key("children"))) {
             var children = pdc.get(Core.key("children"), PersistentDataType.LIST.strings());
