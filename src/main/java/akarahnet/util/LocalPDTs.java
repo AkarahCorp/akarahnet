@@ -5,7 +5,7 @@ import org.bukkit.util.Vector;
 import java.util.List;
 
 public class LocalPDTs {
-    public static Vector fromList(List<Double> list) {
+    public static Vector toVector(List<Double> list) {
         return new Vector(list.get(0), list.get(1), list.get(2));
     }
 

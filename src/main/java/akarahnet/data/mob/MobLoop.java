@@ -10,8 +10,12 @@ import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.Transformation;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.List;
 import java.util.UUID;
@@ -81,6 +85,9 @@ public class MobLoop {
     public static void updateChildren(Entity e) {
         var pdc = e.getPersistentDataContainer();
         var pos = e.getLocation();
+        var pitch = MobUtils.getYaw(e);
+        System.out.println(pos);
+
         if (pdc.has(Core.key("children"))) {
             var children = pdc.get(Core.key("children"), PersistentDataType.LIST.strings());
             assert children != null;
@@ -91,8 +98,31 @@ public class MobLoop {
                     var childPdc = childEntity.getPersistentDataContainer();
                     childEntity.teleportAsync(
                             pos.add(0, 0.5, 0)
-                                    .add(LocalPDTs.fromList(childPdc.getOrDefault(Core.key("children/offset"), PersistentDataType.LIST.doubles(), List.of(0.0, 0.0, 0.0))))
+                                    .add(LocalPDTs.toVector(childPdc.getOrDefault(Core.key("children/offset"), PersistentDataType.LIST.doubles(), List.of(0.0, 0.0, 0.0))))
                     );
+                    if (childEntity instanceof ItemDisplay itemDisplay) {
+                        itemDisplay.setTeleportDuration(3);
+
+                        double halfPitch = Math.toRadians(pos.getYaw()) / 2.0;
+                        double halfYaw = Math.toRadians(pitch) / 2.0;
+
+                        var sinP = Math.sin(halfPitch);
+                        var cosP = Math.cos(halfPitch);
+                        Quaternionf qPitch = new Quaternionf(0, cosP, sinP, 0);
+
+                        var sinY = Math.sin(halfYaw);
+                        var cosY = Math.cos(halfYaw);
+                        Quaternionf qYaw = new Quaternionf(0, cosY, 0, sinY);
+
+                        itemDisplay.setTransformation(
+                                new Transformation(
+                                        new Vector3f(0.0f, 0.0f, 0.0f),
+                                        new Quaternionf(),
+                                        new Vector3f(1.0f, 1.0f, 1.0f),
+                                        qYaw.mul(qPitch)
+                                )
+                        );
+                    }
                 }, () -> {
                 });
             }
