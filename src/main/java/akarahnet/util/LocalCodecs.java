@@ -3,6 +3,7 @@ package akarahnet.util;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
@@ -20,4 +21,10 @@ public interface LocalCodecs {
             Codec.DOUBLE.fieldOf("y").forGetter(Vector::getY),
             Codec.DOUBLE.fieldOf("z").forGetter(Vector::getZ)
     ).apply(instance, Vector::new));
+
+    Codec<Color> COLOR = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.INT.fieldOf("red").forGetter(Color::getRed),
+            Codec.INT.fieldOf("green").forGetter(Color::getGreen),
+            Codec.INT.fieldOf("blue").forGetter(Color::getBlue)
+    ).apply(instance, Color::fromRGB));
 }

@@ -8,11 +8,11 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.GameMode;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayerLoop {
@@ -102,38 +102,43 @@ public class PlayerLoop {
 
         p.showBossBar(
                 BossBar.bossBar(
-                                Component.empty()
-                                        .append(
-                                                Component.text("AKARAHNET")
-                                                        .color(TextColor.color(
-                                                                200, 0,
-                                                                200))
-                                                        .decoration(TextDecoration.BOLD,
-                                                                true))
-                                        .append(
-                                                Component.text(" @ ")
-                                                        .color(TextColor.color(
-                                                                133,
-                                                                133,
-                                                                133)))
-                                        .append(
-                                                Component.text("mc.akarah.dev")
-                                                        .color(TextColor.color(
-                                                                175, 0,
-                                                                175)))
-                                        .append(
-                                                Component.text(" (Indev 0.0.1) ")
-                                                        .color(TextColor.color(
-                                                                60, 60,
-                                                                60)))
-                                        .asComponent(),
-                                0.0F,
-                                BossBar.Color.PURPLE,
-                                BossBar.Overlay.PROGRESS
-                        )
-                        .flags(Set.of(BossBar.Flag.CREATE_WORLD_FOG))
+                        Component.empty()
+                                .append(
+                                        Component.text("AKARAHNET")
+                                                .color(TextColor.color(
+                                                        200, 0,
+                                                        200))
+                                                .decoration(TextDecoration.BOLD,
+                                                        true))
+                                .append(
+                                        Component.text(" @ ")
+                                                .color(TextColor.color(
+                                                        133,
+                                                        133,
+                                                        133)))
+                                .append(
+                                        Component.text("mc.akarah.dev")
+                                                .color(TextColor.color(
+                                                        175, 0,
+                                                        175)))
+                                .append(
+                                        Component.text(" (Indev 0.0.1) ")
+                                                .color(TextColor.color(
+                                                        60, 60,
+                                                        60)))
+                                .asComponent(),
+                        0.0F,
+                        BossBar.Color.PURPLE,
+                        BossBar.Overlay.PROGRESS
+                )
+                // .flags(Set.of(BossBar.Flag.CREATE_WORLD_FOG))
         );
-        p.setViewDistance(5);
-        p.setSendViewDistance(5);
+        if (p.getGameMode() == GameMode.CREATIVE) {
+            p.setViewDistance(16);
+            p.setSendViewDistance(16);
+        } else {
+            p.setViewDistance(5);
+            p.setSendViewDistance(5);
+        }
     }
 }

@@ -5,8 +5,11 @@ import akarahnet.data.actions.dmg.DamageNearby;
 import akarahnet.data.actions.meta.EntityHealth;
 import akarahnet.data.actions.meta.EntityLifetime;
 import akarahnet.data.actions.meta.EntityLocation;
+import akarahnet.data.actions.meta.StableLocationNear;
 import akarahnet.data.actions.sfx.PlayGlobalSound;
 import akarahnet.data.actions.util.DebugLog;
+import akarahnet.data.actions.util.RepeatNTimes;
+import akarahnet.data.actions.vfx.PlayGlobalParticle;
 import com.mojang.serialization.MapCodec;
 import dev.akarah.actions.steps.Action;
 import dev.akarah.actions.steps.ActionType;
@@ -15,6 +18,7 @@ import dev.akarah.actions.values.ValueType;
 import dev.akarah.pluginpacks.multientry.MultiTypeRegistry;
 
 public interface AknActionRegistry {
+
 
     static void registerAll() {
         action(DebugLog.TYPE, DebugLog.CODEC);
@@ -26,10 +30,13 @@ public interface AknActionRegistry {
         action(TryApplyVelocity.TYPE, TryApplyVelocity.CODEC);
         action(PlayGlobalSound.TYPE, PlayGlobalSound.CODEC);
         action(AliveTimer.TYPE, AliveTimer.CODEC);
+        action(RepeatNTimes.TYPE, RepeatNTimes.CODEC);
+        action(PlayGlobalParticle.TYPE, PlayGlobalParticle.CODEC);
 
         value(EntityLifetime.TYPE, EntityLifetime.CODEC);
         value(EntityHealth.TYPE, EntityHealth.CODEC);
         value(EntityLocation.TYPE, EntityLocation.CODEC);
+        value(StableLocationNear.TYPE, StableLocationNear.CODEC);
     }
 
     @SuppressWarnings("unchecked")

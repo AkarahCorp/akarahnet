@@ -7,6 +7,7 @@ import akarahnet.data.mob.spawning.SpawnRuleInstance;
 import akarahnet.player.PlayerLoop;
 import akarahnet.player.event.DamageHandler;
 import akarahnet.player.event.MapEvents;
+import akarahnet.player.event.MiscEvents;
 import akarahnet.player.event.UseAbility;
 import dev.akarah.pluginpacks.data.PackRepository;
 import org.bukkit.Bukkit;
@@ -39,7 +40,7 @@ public final class Core extends JavaPlugin implements Listener {
         this.getServer().getPluginManager().registerEvents(new DamageHandler(), this);
         this.getServer().getPluginManager().registerEvents(new MapEvents(), this);
         this.getServer().getPluginManager().registerEvents(new MobEventHandlers(), this);
-
+        this.getServer().getPluginManager().registerEvents(new MiscEvents(), this);
 
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(Core.getInstance(), task -> {
             for (var player : Bukkit.getServer().getOnlinePlayers()) {
