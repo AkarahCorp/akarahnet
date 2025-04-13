@@ -7,6 +7,7 @@ import akarahnet.data.mob.MobUtils;
 import com.destroystokyo.paper.event.entity.EndermanEscapeEvent;
 import dev.akarah.actions.Environment;
 import dev.akarah.actions.values.Values;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -17,6 +18,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.persistence.PersistentDataType;
+
+import java.util.UUID;
 
 public class MobEventHandlers implements Listener {
     @EventHandler
@@ -25,7 +29,8 @@ public class MobEventHandlers implements Listener {
             return;
         }
 
-        if (event.getEntity().getPersistentDataContainer().has(Core.key("health"))) {
+        var pdc = event.getEntity().getPersistentDataContainer();
+        if (pdc.has(Core.key("health"))) {
             var mob = MobUtils.getMobType(event.getEntity());
             if (mob.configuration().invulnerable()) {
                 event.setCancelled(true);
@@ -44,6 +49,18 @@ public class MobEventHandlers implements Listener {
 
             var fhp = hp - event.getDamage();
             if (fhp <= 0) {
+                if (pdc.has(Core.key("children"))) {
+                    var children = pdc.get(Core.key("children"), PersistentDataType.LIST.strings());
+                    assert children != null;
+                    for (var child : children) {
+                        var childEntity = Bukkit.getEntity(UUID.fromString(child));
+                        assert childEntity != null;
+                        childEntity.getScheduler().run(Core.getInstance(), task -> {
+                            childEntity.remove();
+                        }, () -> {
+                        });
+                    }
+                }
                 event.getEntity().remove();
             } else {
                 MobUtils.setHealth(event.getEntity(), fhp);

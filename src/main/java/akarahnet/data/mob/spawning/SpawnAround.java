@@ -1,7 +1,7 @@
 package akarahnet.data.mob.spawning;
 
-import akarahnet.data.actions.AknCodecs;
 import akarahnet.data.mob.CustomMob;
+import akarahnet.util.LocalCodecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -15,8 +15,8 @@ import java.util.Objects;
 
 public record SpawnAround(Location center, double radius, int maxMobs) implements SpawnRule {
     public static MapCodec<SpawnAround> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            AknCodecs.LOCATION.fieldOf("center").forGetter(SpawnAround::center),
-            Codec.DOUBLE.fieldOf("radius").forGetter(SpawnAround::radius),
+            LocalCodecs.LOCATION.fieldOf("center").forGetter(SpawnAround::center),
+            Codec.DOUBLE.fieldOf("width").forGetter(SpawnAround::radius),
             Codec.INT.fieldOf("max_mobs").forGetter(SpawnAround::maxMobs)
     ).apply(instance, SpawnAround::new));
 

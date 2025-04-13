@@ -1,7 +1,7 @@
 package akarahnet.data.mob.spawning;
 
-import akarahnet.data.actions.AknCodecs;
 import akarahnet.data.mob.CustomMob;
+import akarahnet.util.LocalCodecs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public record SpawnOnce(Location location, AtomicBoolean spawnedYet) implements SpawnRule {
     public static MapCodec<SpawnOnce> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            AknCodecs.LOCATION.fieldOf("center").forGetter(SpawnOnce::location),
+            LocalCodecs.LOCATION.fieldOf("center").forGetter(SpawnOnce::location),
             Codec.BOOL.optionalFieldOf("spawned_yet", false).xmap(AtomicBoolean::new, AtomicBoolean::get).forGetter(SpawnOnce::spawnedYet)
     ).apply(instance, SpawnOnce::new));
 
