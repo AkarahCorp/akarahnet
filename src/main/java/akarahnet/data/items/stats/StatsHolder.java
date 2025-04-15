@@ -73,10 +73,9 @@ public class StatsHolder {
         var baseStats = StatsObject.of()
                 .add(Stats.MAX_HEALTH, 100)
                 .add(Stats.MAX_MANA, 100)
+                .add(Stats.MANA_REGEN, 100)
                 .add(Stats.WALK_SPEED, 100)
                 .add(Stats.ATTACK_RANGE, 3)
-                .add(Stats.TELEPORT_DAMAGE, 30)
-                .add(Stats.TELEPORT_RANGE, 5)
                 .add(Stats.SCALE, 100);
 
         var items = new ItemStack[]{

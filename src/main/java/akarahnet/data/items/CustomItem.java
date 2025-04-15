@@ -26,14 +26,16 @@ import java.util.Optional;
 public record CustomItem(
         NamespacedKey id,
         Optional<StatsObject> stats,
-        VisualData visualData
+        VisualData visualData,
+        Optional<ItemEventHandlers> event
 ) {
     public static PluginNamespace<CustomItem> NAMESPACE = PluginNamespace.create("citem");
 
     public static Codec<CustomItem> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codecs.NAMESPACED_KEY.fieldOf("id").forGetter(CustomItem::id),
             StatsObject.CODEC.optionalFieldOf("stats").forGetter(CustomItem::stats),
-            VisualData.CODEC.fieldOf("visual").forGetter(CustomItem::visualData)
+            VisualData.CODEC.fieldOf("visual").forGetter(CustomItem::visualData),
+            ItemEventHandlers.CODEC.optionalFieldOf("event").forGetter(CustomItem::event)
     ).apply(instance, CustomItem::new));
 
     static Component[] STARS_LIST = {

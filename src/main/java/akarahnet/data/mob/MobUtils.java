@@ -5,6 +5,8 @@ import akarahnet.util.LocalPDTs;
 import dev.akarah.pluginpacks.data.PackRepository;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +15,21 @@ import java.util.List;
 import java.util.Objects;
 
 public class MobUtils {
+    public static void applyKnockback(Entity entity, Vector velocity) {
+        if (entity instanceof Player p) {
+            p.getScheduler().run(Core.getInstance(), task -> {
+                if (p.getNoDamageTicks() <= 0 || p.getNoDamageTicks() == 20) {
+                    p.setVelocity(
+                            p.getVelocity().clone().add(velocity)
+                    );
+                }
+            }, () -> {
+            });
+        } else {
+            MobUtils.setVelocity(entity, MobUtils.getCustomVelocity(entity).add(velocity));
+        }
+    }
+
     public static double getHealth(Entity entity) {
         return entity.getPersistentDataContainer().getOrDefault(Core.key("health"), PersistentDataType.DOUBLE, 0.0);
     }
@@ -22,6 +39,9 @@ public class MobUtils {
     }
 
     public static double getYaw(Entity entity) {
+        if (entity instanceof LivingEntity p) {
+            return p.getLocation().getYaw();
+        }
         return entity.getPersistentDataContainer().getOrDefault(Core.key("yaw"), PersistentDataType.DOUBLE, 0.0);
     }
 
@@ -33,12 +53,15 @@ public class MobUtils {
         return LocalPDTs.toVector(entity.getPersistentDataContainer().getOrDefault(Core.key("velocity"), PersistentDataType.LIST.doubles(), List.of(0.0, 0.0, 0.0)));
     }
 
-    public static void setCustomVelocity(Entity entity, Vector vector) {
+    public static void setVelocity(Entity entity, Vector vector) {
+        if (entity instanceof LivingEntity le) {
+            le.setVelocity(vector);
+        }
         entity.getPersistentDataContainer().set(Core.key("velocity"), PersistentDataType.LIST.doubles(), LocalPDTs.fromVector(vector));
     }
 
     public static void addCustomVelocity(Entity entity, Vector vector) {
-        setCustomVelocity(entity, getCustomVelocity(entity).add(vector));
+        setVelocity(entity, getCustomVelocity(entity).add(vector));
     }
 
     public static @NotNull NamespacedKey getId(Entity entity) {

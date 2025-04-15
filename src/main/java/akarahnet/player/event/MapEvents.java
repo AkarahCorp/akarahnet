@@ -3,6 +3,7 @@ package akarahnet.player.event;
 import org.bukkit.GameMode;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -16,17 +17,13 @@ public class MapEvents implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlace(BlockPlaceEvent event) {
-        if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
-            event.setCancelled(true);
-        }
+        event.setCancelled(!event.getPlayer().getGameMode().equals(GameMode.CREATIVE));
     }
 
-    @EventHandler
-    public void onPlace(BlockBreakEvent event) {
-        if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
-            event.setCancelled(true);
-        }
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onBreak(BlockBreakEvent event) {
+        event.setCancelled(!event.getPlayer().getGameMode().equals(GameMode.CREATIVE));
     }
 }

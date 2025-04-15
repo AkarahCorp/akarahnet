@@ -15,7 +15,8 @@ import java.util.Map;
 public class StatsObject {
     public static Codec<StatsObject> CODEC = Codec.unboundedMap(
             PrimitiveCodec.STRING.xmap(NamespacedKey::fromString, NamespacedKey::asString),
-            PrimitiveCodec.DOUBLE).xmap(StatsObject::new, x -> x.stats);
+            PrimitiveCodec.DOUBLE
+    ).xmap(StatsObject::new, x -> x.stats);
 
     HashMap<NamespacedKey, Double> stats;
 
@@ -53,14 +54,11 @@ public class StatsObject {
     public void addStatsToLore(ItemLore.Builder lore, boolean hideZeroes) {
         this.addPositiveStat(lore, "❤", "Max Health", Stats.MAX_HEALTH, hideZeroes);
         this.addPositiveStat(lore, "⸎", "Max Mana", Stats.MAX_MANA, hideZeroes);
+        this.addPositiveStat(lore, "⸎", "Mana Regeneration", Stats.MANA_REGEN, hideZeroes);
         this.addPositiveStat(lore, "🗡", "Attack Damage", Stats.ATTACK_DAMAGE, hideZeroes);
         this.addPositiveStat(lore, "α", "Attack Speed", Stats.ATTACK_SPEED, hideZeroes);
         this.addPositiveStat(lore, "ψ", "Attack Range", Stats.ATTACK_RANGE, hideZeroes);
         this.addPositiveStat(lore, "≈", "Walk Speed", Stats.WALK_SPEED, hideZeroes);
-
-
-        this.addPositiveStat(lore, "\uD83D\uDEE5", "Teleport Damage", Stats.TELEPORT_DAMAGE, hideZeroes);
-        this.addPositiveStat(lore, "\uD83D\uDEE7", "Teleport Range", Stats.TELEPORT_RANGE, hideZeroes);
     }
 
     public StatsObject add(NamespacedKey stat, double amount) {

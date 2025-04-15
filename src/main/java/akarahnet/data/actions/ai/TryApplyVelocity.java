@@ -29,7 +29,7 @@ public record TryApplyVelocity(EntityValue targetEntity) implements Action {
                 var locTmp = loc.clone().add(velocity.getX(), 0, 0);
                 var voxel = locTmp.getBlock().getBoundingBox();
                 if (voxel.contains(locTmp.toVector())) {
-                    MobUtils.setCustomVelocity(entity, MobUtils.getCustomVelocity(entity).setX(0));
+                    MobUtils.setVelocity(entity, MobUtils.getCustomVelocity(entity).setX(0));
                 }
             }
 
@@ -37,7 +37,7 @@ public record TryApplyVelocity(EntityValue targetEntity) implements Action {
                 var locTmp = loc.clone().add(0, velocity.getY(), 0);
                 var voxel = locTmp.getBlock().getBoundingBox();
                 if (voxel.contains(locTmp.toVector())) {
-                    MobUtils.setCustomVelocity(entity, MobUtils.getCustomVelocity(entity).setY(0));
+                    MobUtils.setVelocity(entity, MobUtils.getCustomVelocity(entity).setY(0));
                 }
             }
 
@@ -45,7 +45,7 @@ public record TryApplyVelocity(EntityValue targetEntity) implements Action {
                 var locTmp = loc.clone().add(0, 0, velocity.getZ());
                 var voxel = locTmp.getBlock().getBoundingBox();
                 if (voxel.contains(locTmp.toVector())) {
-                    MobUtils.setCustomVelocity(entity, MobUtils.getCustomVelocity(entity).setZ(0));
+                    MobUtils.setVelocity(entity, MobUtils.getCustomVelocity(entity).setZ(0));
                 }
             }
 

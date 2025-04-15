@@ -2,6 +2,7 @@ package akarahnet.data.actions.dmg;
 
 import akarahnet.Core;
 import akarahnet.data.actions.casting.LocationValue;
+import akarahnet.data.mob.MobUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -34,19 +35,13 @@ public record DamageNearby(LocationValue location, boolean onlyPlayers, double d
                 var loc = rLocation.clone();
                 if (onlyPlayers && nearbyEntity.getType().equals(EntityType.PLAYER)) {
                     if (nearbyEntity instanceof LivingEntity le) {
+                        MobUtils.applyKnockback(le, loc.getDirection().normalize().multiply(0.5).setY(0.1));
                         le.damage(damage);
-                        le.setVelocity(
-                                le.getVelocity()
-                                        .add(loc.getDirection().normalize().multiply(0.5).setY(0.1))
-                        );
                     }
                 } else if (!onlyPlayers) {
                     if (nearbyEntity instanceof LivingEntity le) {
+                        MobUtils.applyKnockback(le, loc.getDirection().normalize().multiply(0.5).setY(0.1));
                         le.damage(damage);
-                        le.setVelocity(
-                                le.getVelocity()
-                                        .add(loc.getDirection().normalize().multiply(0.5).setY(0.1))
-                        );
                     }
                 }
             }

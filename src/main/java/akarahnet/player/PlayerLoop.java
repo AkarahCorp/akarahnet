@@ -42,7 +42,7 @@ public class PlayerLoop {
         var stats = sh.getStatsFor(p.getUniqueId());
 
         sh.addHealth(p.getUniqueId(), stats.get(Stats.MAX_HEALTH) / 2000);
-        sh.addMana(p.getUniqueId(), stats.get(Stats.MAX_MANA) / 2000);
+        sh.addMana(p.getUniqueId(), stats.get(Stats.MAX_MANA) / 2000 * (stats.get(Stats.MANA_REGEN) / 100.0));
 
         if (sh.getHealth(p.getUniqueId()) >= stats.get(Stats.MAX_HEALTH)) {
             sh.setHealth(

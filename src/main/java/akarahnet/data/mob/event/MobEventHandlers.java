@@ -99,7 +99,7 @@ public class MobEventHandlers implements Listener {
             event.setDamage(
                     sh.getStatsFor(p.getUniqueId()).get(Stats.ATTACK_DAMAGE)
             );
-            MobUtils.setCustomVelocity(entity, p.getLocation().getDirection().normalize().setY(0.1));
+            MobUtils.setVelocity(entity, p.getLocation().getDirection().normalize().setY(0.1));
         }
     }
 
