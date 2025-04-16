@@ -86,7 +86,7 @@ public record CustomMob(
                 StatsObject.CODEC.optionalFieldOf("stats", StatsObject.of()).forGetter(Configuration::stats),
                 HitBox.CODEC.fieldOf("hitbox").forGetter(Configuration::hitbox),
                 Model.CODEC.listOf().fieldOf("model").forGetter(Configuration::model),
-                MobEventActions.CODEC.optionalFieldOf("event", new MobEventActions(new Noop(), new Noop(), new Noop())).forGetter(Configuration::event),
+                MobEventActions.CODEC.optionalFieldOf("event", new MobEventActions(new Noop(), new Noop(), new Noop(), new Noop())).forGetter(Configuration::event),
                 Codec.BOOL.optionalFieldOf("invulnerable", false).forGetter(Configuration::invulnerable)
         ).apply(instance, Configuration::new));
     }

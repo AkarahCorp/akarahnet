@@ -8,6 +8,7 @@ import akarahnet.data.actions.spell.TeleportForwards;
 import akarahnet.data.actions.util.DebugLog;
 import akarahnet.data.actions.util.RepeatNTimes;
 import akarahnet.data.actions.vfx.PlayGlobalParticle;
+import akarahnet.data.actions.vfx.SpawnCItem;
 import com.mojang.serialization.MapCodec;
 import dev.akarah.actions.steps.Action;
 import dev.akarah.actions.steps.ActionType;
@@ -31,6 +32,7 @@ public interface AknActionRegistry {
         action(RepeatNTimes.TYPE, RepeatNTimes.CODEC);
         action(PlayGlobalParticle.TYPE, PlayGlobalParticle.CODEC);
         action(TeleportForwards.TYPE, TeleportForwards.CODEC);
+        action(SpawnCItem.TYPE, SpawnCItem.CODEC);
 
         value(EntityLifetime.TYPE, EntityLifetime.CODEC);
         value(EntityHealth.TYPE, EntityHealth.CODEC);

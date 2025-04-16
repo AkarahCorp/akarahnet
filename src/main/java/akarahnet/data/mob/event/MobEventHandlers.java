@@ -49,6 +49,7 @@ public class MobEventHandlers implements Listener {
 
             var fhp = hp - event.getDamage();
             if (fhp <= 0) {
+                mob.configuration().event().onDeath().execute(env);
                 if (pdc.has(Core.key("children"))) {
                     var children = pdc.get(Core.key("children"), PersistentDataType.LIST.strings());
                     assert children != null;
