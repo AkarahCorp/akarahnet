@@ -72,6 +72,8 @@ public record CustomItem(
             meta.lore(lore.build().lines());
             meta.setUnbreakable(true);
             meta.getPersistentDataContainer().set(Core.key("id"), PersistentDataType.STRING, this.id.asString());
+            meta.setMaxStackSize(99);
+            meta.setUnbreakable(true);
         });
 
         return item;

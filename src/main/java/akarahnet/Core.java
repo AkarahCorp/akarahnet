@@ -4,11 +4,11 @@ import akarahnet.data.items.UpdateInventory;
 import akarahnet.data.mob.MobLoop;
 import akarahnet.data.mob.event.MobEventHandlers;
 import akarahnet.data.mob.spawning.SpawnRuleInstance;
+import akarahnet.inventory.ShopEvents;
 import akarahnet.player.PlayerLoop;
 import akarahnet.player.event.DamageHandler;
 import akarahnet.player.event.MapEvents;
 import akarahnet.player.event.MiscEvents;
-import akarahnet.player.event.UseAbility;
 import dev.akarah.pluginpacks.data.PackRepository;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -36,11 +36,11 @@ public final class Core extends JavaPlugin implements Listener {
         PackRepository.getInstance().reloadRegistries();
 
         this.getServer().getPluginManager().registerEvents(this, this);
-        this.getServer().getPluginManager().registerEvents(new UseAbility(), this);
         this.getServer().getPluginManager().registerEvents(new DamageHandler(), this);
         this.getServer().getPluginManager().registerEvents(new MapEvents(), this);
         this.getServer().getPluginManager().registerEvents(new MobEventHandlers(), this);
         this.getServer().getPluginManager().registerEvents(new MiscEvents(), this);
+        this.getServer().getPluginManager().registerEvents(new ShopEvents(), this);
 
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(Core.getInstance(), task -> {
             for (var player : Bukkit.getServer().getOnlinePlayers()) {

@@ -33,7 +33,7 @@ public record TryJump(EntityValue targetEntity, double distance) implements Acti
             if (tempLoc.getBlock().isSolid()) {
                 tempLoc.add(0, 1, 0);
                 if (!tempLoc.getBlock().isSolid()) {
-                    MobUtils.addCustomVelocity(entity, new Vector(0, 0.5, 0));
+                    MobUtils.addVelocity(entity, new Vector(0, 0.5, 0));
                 }
             }
         }, () -> {

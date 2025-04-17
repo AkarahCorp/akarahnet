@@ -24,7 +24,7 @@ public record Gravity(EntityValue targetEntity, double distance) implements Acti
     @Override
     public void execute(Environment environment) {
         var entity = environment.resolve(this.targetEntity());
-        MobUtils.addCustomVelocity(entity, new Vector(0, -distance, 0));
+        MobUtils.addVelocity(entity, new Vector(0, -distance, 0));
     }
 
     @Override

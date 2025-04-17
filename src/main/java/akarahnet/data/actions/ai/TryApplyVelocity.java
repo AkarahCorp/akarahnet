@@ -23,13 +23,13 @@ public record TryApplyVelocity(EntityValue targetEntity) implements Action {
         entity.getScheduler().run(Core.getInstance(), task -> {
             var loc = entity.getLocation();
 
-            var velocity = MobUtils.getCustomVelocity(entity);
+            var velocity = MobUtils.getVelocity(entity);
 
             {
                 var locTmp = loc.clone().add(velocity.getX(), 0, 0);
                 var voxel = locTmp.getBlock().getBoundingBox();
                 if (voxel.contains(locTmp.toVector())) {
-                    MobUtils.setVelocity(entity, MobUtils.getCustomVelocity(entity).setX(0));
+                    MobUtils.setVelocity(entity, MobUtils.getVelocity(entity).setX(0));
                 }
             }
 
@@ -37,7 +37,7 @@ public record TryApplyVelocity(EntityValue targetEntity) implements Action {
                 var locTmp = loc.clone().add(0, velocity.getY(), 0);
                 var voxel = locTmp.getBlock().getBoundingBox();
                 if (voxel.contains(locTmp.toVector())) {
-                    MobUtils.setVelocity(entity, MobUtils.getCustomVelocity(entity).setY(0));
+                    MobUtils.setVelocity(entity, MobUtils.getVelocity(entity).setY(0));
                 }
             }
 
@@ -45,13 +45,13 @@ public record TryApplyVelocity(EntityValue targetEntity) implements Action {
                 var locTmp = loc.clone().add(0, 0, velocity.getZ());
                 var voxel = locTmp.getBlock().getBoundingBox();
                 if (voxel.contains(locTmp.toVector())) {
-                    MobUtils.setVelocity(entity, MobUtils.getCustomVelocity(entity).setZ(0));
+                    MobUtils.setVelocity(entity, MobUtils.getVelocity(entity).setZ(0));
                 }
             }
 
-            var newLoc = loc.add(MobUtils.getCustomVelocity(entity));
+            var newLoc = loc.add(MobUtils.getVelocity(entity));
             entity.teleportAsync(newLoc);
-            MobUtils.addCustomVelocity(entity, MobUtils.getCustomVelocity(entity).divide(new Vector(2, 2, 2)).multiply(-1));
+            MobUtils.addVelocity(entity, MobUtils.getVelocity(entity).divide(new Vector(2, 2, 2)).multiply(-1));
         }, () -> {
         });
 

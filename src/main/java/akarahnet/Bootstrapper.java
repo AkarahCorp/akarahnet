@@ -3,11 +3,13 @@ package akarahnet;
 import akarahnet.commands.CItemCommand;
 import akarahnet.commands.CMobCommand;
 import akarahnet.commands.CReloadPacksCommand;
+import akarahnet.commands.OpenShopCommand;
 import akarahnet.data.actions.AknActionRegistry;
 import akarahnet.data.items.CustomItem;
 import akarahnet.data.mob.CustomMob;
 import akarahnet.data.mob.spawning.SpawnRule;
 import akarahnet.data.mob.spawning.SpawnRuleInstance;
+import akarahnet.inventory.Shop;
 import dev.akarah.pluginpacks.data.PackRepository;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
@@ -26,6 +28,7 @@ public class Bootstrapper implements PluginBootstrap {
             CItemCommand.register(event.registrar());
             CMobCommand.register(event.registrar());
             CReloadPacksCommand.register(event.registrar());
+            OpenShopCommand.register(event.registrar());
         });
 
 
@@ -36,6 +39,8 @@ public class Bootstrapper implements PluginBootstrap {
                     PackRepository.RegistryInstance.create(CustomMob.CODEC, CustomMob.class));
             PackRepository.getInstance().addRegistry(SpawnRuleInstance.NAMESPACE,
                     PackRepository.RegistryInstance.create(SpawnRuleInstance.CODEC, SpawnRuleInstance.class));
+            PackRepository.getInstance().addRegistry(Shop.NAMESPACE,
+                    PackRepository.RegistryInstance.create(Shop.CODEC, Shop.class));
 
 
         } catch (Exception e) {

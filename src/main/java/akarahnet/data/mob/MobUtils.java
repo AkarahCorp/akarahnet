@@ -26,7 +26,7 @@ public class MobUtils {
             }, () -> {
             });
         } else {
-            MobUtils.setVelocity(entity, MobUtils.getCustomVelocity(entity).add(velocity));
+            MobUtils.setVelocity(entity, MobUtils.getVelocity(entity).add(velocity));
         }
     }
 
@@ -49,7 +49,10 @@ public class MobUtils {
         entity.getPersistentDataContainer().set(Core.key("yaw"), PersistentDataType.DOUBLE, yaw);
     }
 
-    public static Vector getCustomVelocity(Entity entity) {
+    public static Vector getVelocity(Entity entity) {
+        if (entity instanceof LivingEntity le) {
+            return le.getVelocity();
+        }
         return LocalPDTs.toVector(entity.getPersistentDataContainer().getOrDefault(Core.key("velocity"), PersistentDataType.LIST.doubles(), List.of(0.0, 0.0, 0.0)));
     }
 
@@ -60,8 +63,8 @@ public class MobUtils {
         entity.getPersistentDataContainer().set(Core.key("velocity"), PersistentDataType.LIST.doubles(), LocalPDTs.fromVector(vector));
     }
 
-    public static void addCustomVelocity(Entity entity, Vector vector) {
-        setVelocity(entity, getCustomVelocity(entity).add(vector));
+    public static void addVelocity(Entity entity, Vector vector) {
+        setVelocity(entity, getVelocity(entity).add(vector));
     }
 
     public static @NotNull NamespacedKey getId(Entity entity) {

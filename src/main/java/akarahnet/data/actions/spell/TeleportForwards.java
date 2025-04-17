@@ -88,7 +88,7 @@ public record TeleportForwards(EntityValue entity, double distance, double damag
         }
         entity.teleportAsync(lastPos).thenAccept(v -> {
             if (v) {
-                MobUtils.addCustomVelocity(entity, entity.getLocation().getDirection().multiply(0.2));
+                MobUtils.addVelocity(entity, entity.getLocation().getDirection().multiply(0.2));
             }
         });
     }

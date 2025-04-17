@@ -29,7 +29,7 @@ public record TryWalkForward(EntityValue targetEntity, double distance) implemen
             tempLoc.setYaw((float) MobUtils.getYaw(entity));
             tempLoc.setPitch(0);
             var tempDir = tempLoc.getDirection();
-            MobUtils.addCustomVelocity(entity, tempDir.multiply(distance));
+            MobUtils.addVelocity(entity, tempDir.multiply(distance));
         }, () -> {
 
         });
