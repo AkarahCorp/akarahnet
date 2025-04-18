@@ -4,6 +4,7 @@ import akarahnet.Core;
 import akarahnet.data.items.stats.Stats;
 import akarahnet.data.items.stats.StatsObject;
 import akarahnet.data.mob.event.MobEventActions;
+import akarahnet.data.mob.model.MobModel;
 import akarahnet.util.LocalCodecs;
 import akarahnet.util.LocalPDTs;
 import com.mojang.serialization.Codec;
@@ -12,16 +13,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.akarah.actions.steps.generic.Noop;
 import dev.akarah.pluginpacks.Codecs;
 import dev.akarah.pluginpacks.data.PluginNamespace;
-import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Display;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Interaction;
-import org.bukkit.entity.ItemDisplay;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
@@ -53,20 +49,10 @@ public record CustomMob(
 
             var models = new ArrayList<String>();
             for (var model : this.configuration().model()) {
-                var itemModel = loc.getWorld().spawnEntity(loc.clone().add(model.offset()).add(0, 0.5, 0).setRotation(0, 0), EntityType.ITEM_DISPLAY);
-
-                if (itemModel instanceof ItemDisplay itemDisplay) {
-                    itemDisplay.setBillboard(Display.Billboard.FIXED);
-                    itemDisplay.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.FIXED);
-
-                    var item = ItemStack.of(Material.POISONOUS_POTATO);
-                    item.setData(DataComponentTypes.ITEM_MODEL, model.itemModel());
-                    itemDisplay.setItemStack(item);
-                    models.add(itemModel.getUniqueId().toString());
-
-                    itemModel.getPersistentDataContainer()
-                            .set(Core.key("children/offset"), PersistentDataType.LIST.doubles(), LocalPDTs.fromVector(model.offset()));
-                }
+                var entity = model.mobModel().spawnChild(loc);
+                models.add(entity.getUniqueId().toString());
+                entity.getPersistentDataContainer()
+                        .set(Core.key("children/offset"), PersistentDataType.LIST.doubles(), LocalPDTs.fromVector(model.offset()));
             }
             rootEntity.getPersistentDataContainer()
                     .set(Core.key("children"), PersistentDataType.LIST.strings(), models);
@@ -77,7 +63,7 @@ public record CustomMob(
             String name,
             StatsObject stats,
             HitBox hitbox,
-            List<Model> model,
+            List<ModelInstance> model,
             MobEventActions event,
             boolean invulnerable
     ) {
@@ -85,7 +71,7 @@ public record CustomMob(
                 PrimitiveCodec.STRING.optionalFieldOf("name", "Unnamed").forGetter(Configuration::name),
                 StatsObject.CODEC.optionalFieldOf("stats", StatsObject.of()).forGetter(Configuration::stats),
                 HitBox.CODEC.fieldOf("hitbox").forGetter(Configuration::hitbox),
-                Model.CODEC.listOf().fieldOf("model").forGetter(Configuration::model),
+                ModelInstance.CODEC.listOf().fieldOf("model").forGetter(Configuration::model),
                 MobEventActions.CODEC.optionalFieldOf("event", new MobEventActions(new Noop(), new Noop(), new Noop(), new Noop())).forGetter(Configuration::event),
                 Codec.BOOL.optionalFieldOf("invulnerable", false).forGetter(Configuration::invulnerable)
         ).apply(instance, Configuration::new));
@@ -101,13 +87,13 @@ public record CustomMob(
         ).apply(instance, HitBox::new));
     }
 
-    public record Model(
-            NamespacedKey itemModel,
+    public record ModelInstance(
+            MobModel mobModel,
             Vector offset
     ) {
-        public static Codec<Model> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                Codecs.NAMESPACED_KEY.fieldOf("item_model").forGetter(Model::itemModel),
-                LocalCodecs.VECTOR.fieldOf("offset").forGetter(Model::offset)
-        ).apply(instance, Model::new));
+        public static Codec<ModelInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                MobModel.REGISTRY.codec().fieldOf("model").forGetter(ModelInstance::mobModel),
+                LocalCodecs.VECTOR.fieldOf("offset").forGetter(ModelInstance::offset)
+        ).apply(instance, ModelInstance::new));
     }
 }

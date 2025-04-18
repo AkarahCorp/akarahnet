@@ -7,10 +7,14 @@ import akarahnet.commands.OpenShopCommand;
 import akarahnet.data.actions.AknActionRegistry;
 import akarahnet.data.items.CustomItem;
 import akarahnet.data.mob.CustomMob;
+import akarahnet.data.mob.model.MobModel;
+import akarahnet.data.mob.model.MobModelType;
 import akarahnet.data.mob.spawning.SpawnRule;
 import akarahnet.data.mob.spawning.SpawnRuleInstance;
 import akarahnet.inventory.Shop;
 import dev.akarah.pluginpacks.data.PackRepository;
+import dev.akarah.pluginpacks.multientry.MultiTypeRegistry;
+import dev.akarah.pluginpacks.multientry.TypeRegistry;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -42,7 +46,8 @@ public class Bootstrapper implements PluginBootstrap {
             PackRepository.getInstance().addRegistry(Shop.NAMESPACE,
                     PackRepository.RegistryInstance.create(Shop.CODEC, Shop.class));
 
-
+            MultiTypeRegistry.getInstance().register(MobModel.NAMESPACE, TypeRegistry.create(MobModelType.CODEC));
+            MobModel.registerAll();
         } catch (Exception e) {
             bootstrapContext.getLogger().error("An exception occurred while bootstrapping!");
             bootstrapContext.getLogger().error(e.toString());
